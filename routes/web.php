@@ -47,6 +47,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('admin/user/insert', [UserController::class, 'insert']);
     Route::post('admin/user/update/{id}', [UserController::class, 'update'])->name('admin.user.update');
     Route::delete('admin/user/delete/{id}', [UserController::class, 'destroy'])->name('admin.user.destroy');
+
+    Route::group(['prefix' => 'laravel-filemanager'], function () {
+     \UniSharp\LaravelFilemanager\Lfm::routes();
+ });
 })->middleware(['auth', 'verified']);
 
 Route::get('/email/verify', function () {
