@@ -9,29 +9,37 @@
                 Thêm bài viết
             </div>
             <div class="card-body">
-                <form>
+                <form method="POST" action="{{ url('admin/page/insert') }}">
+                    @csrf
                     <div class="mb-3">
-                        <label for="name">Tiêu đề bài viết</label>
-                        <input class="form-control" type="text" name="name" id="name">
+                        <label for="title">Tiêu đề bài viết</label>
+                        <input class="form-control @error('title') is-invalid @enderror" type="text" name="title"
+                            id="title">
+                        @error('title')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
                     <div class="mb-3">
-                        <label for="page_content">Nội dung bài viết</label>
-                        <textarea name="" class="form-control" id="page_content" cols="30" rows="5"></textarea>
+                        <label for="detail">Nội dung bài viết</label>
+                        <textarea name="detail" class="form-control @error('detail') is-invalid @enderror" id="detail" cols="30" rows="15"></textarea>
+                        @error('detail')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
 
                     <div class="mb-3">
                         <label for="">Trạng thái</label>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1"
-                                value="option1" checked>
-                            <label class="form-check-label" for="exampleRadios1">
+                            <input class="form-check-input" type="radio" name="status" id="status1"
+                                value="{{App\Models\Page::STATUS_PENDING}}" checked>
+                            <label class="form-check-label" for="status1">
                                 Chờ duyệt
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2"
-                                value="option2">
-                            <label class="form-check-label" for="exampleRadios2">
+                            <input class="form-check-input" type="radio" name="status" id="status2"
+                                value="{{App\Models\Page::STATUS_PUBLIC}}">
+                            <label class="form-check-label" for="status2">
                                 Công khai
                             </label>
                         </div>
@@ -46,7 +54,7 @@
     <script>
         var editor_config = {
             path_absolute: "http://127.0.0.1:8000/",
-            selector: 'textarea#page_content',
+            selector: 'textarea#detail',
             relative_urls: false,
             plugins: [
                 "advlist autolink lists link image charmap print preview hr anchor pagebreak",

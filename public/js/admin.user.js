@@ -1,16 +1,3 @@
-document.addEventListener("DOMContentLoaded", function () {
-
-    const toastEl = document.getElementById('liveToast');
-
-    if (toastEl) {
-        const toast = new bootstrap.Toast(toastEl, {
-            delay: 4000
-        });
-        toast.show();
-    }
-
-});
-
 var editModal = document.getElementById('editModal')
 editModal.addEventListener('show.bs.modal', function (event) {
     // Button that triggered the modal
