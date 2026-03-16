@@ -1,0 +1,111 @@
+@extends('layouts.admin')
+
+@section('content')
+    <div id="content" class="container-fluid">
+        <div class="card">
+            <div class="card-header font-weight-bold d-flex justify-content-between align-items-center">
+                <h5 class="m-0 ">Danh sách thành viên</h5>
+                <div class="form-search form-inline">
+                    <form class="d-flex" role="search" method="GET" action="">
+                        <input class="form-control me-2" type="search" placeholder="Tìm kiếm" name="keyword" value="{{ request('keyword') }}">
+                        <button class="btn btn-outline-primary" type="submit">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="analytic">
+                    <a href="" class="text-pink">Đang hoạt động <span class="text-muted">({{ $num_active }})</span></a>
+                    <a href="" class="text-pink">Chờ xác thực <span class="text-muted">({{$num_pending}})</span></a>
+                    <a href="" class="text-pink">Bị khóa <span class="text-muted">({{$num_blocked}})</span></a>
+                </div>
+                <div class="d-flex align-items-center py-3 gap-2">
+                    <select class="form-select w-auto">
+                        <option>Chọn</option>
+                        <option>Tác vụ 1</option>
+                        <option>Tác vụ 2</option>
+                    </select>
+
+                    <button type="submit" class="btn btn-primary">
+                        Áp dụng
+                    </button>
+                </div>
+                <table class="table table-striped table-checkall">
+                    @if ($users)
+                        @php
+                            $t = 0;
+                        @endphp
+                        <thead>
+                            <tr>
+                                <th>
+                                    <input type="checkbox" name="checkall">
+                                </th>
+                                <th scope="col">#</th>
+                                <th scope="col">Họ tên</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Quyền</th>
+                                <th scope="col">Trạng thái</th>
+                                <th scope="col">Ngày tạo</th>
+                                <th scope="col">Tác vụ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($users as $user)
+                                @php
+                                    $t++;
+                                @endphp
+                                <tr>
+                                    <td>
+                                        <input type="checkbox">
+                                    </td>
+                                    <th scope="row">{{$t}}</th>
+                                    <td>{{$user->name}}</td>
+                                    <td>{{$user->email}}</td>
+                                    <td>Admintrator</td>
+                                    @if($user->status == App\Models\User::STATUS_ACTIVE)
+                                        <td><span class="badge text-bg-success">Đang hoạt động</span></td>
+                                    @elseif ($user->status == App\Models\User::STATUS_PENDING)
+                                        <td><span class="badge text-bg-warning">Chờ xác thực</span></td>
+                                    @else
+                                        <td><span class="badge text-bg-danger">Bị khóa</span></td>
+                                    @endif
+                                    <td>{{ $user->created_at->timezone('Asia/Ho_Chi_Minh')->format('d/m/Y H:i:s') }}</td>
+                                    <td>
+                                        <button class="btn btn-success btn-sm rounded-2 text-white" type="button"
+                                            data-toggle="tooltip" data-placement="top" title="Edit" data-bs-toggle="modal"
+                                            data-bs-target="#editModal" data-bs-id="{{ $user->id }}"
+                                            data-bs-name="{{ $user->name }}" data-bs-status="{{ $user->status }}"><i
+                                                class="fa fa-edit"></i></button>
+                                        <button type="button" class="btn btn-danger btn-sm rounded-2 text-white" type="button"
+                                            data-toggle="tooltip" data-placement="top" title="Delete" data-bs-toggle="modal"
+                                            data-bs-target="#deleteModal" data-bs-id="{{ $user->id }}"
+                                            data-bs-name="{{ $user->name }}"><i class="fa fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    @endif
+                </table>
+                {{ $users->appends(request()->query())->links() }}
+
+                @include('admin.user.edit')
+                @include('admin.user.delete')
+            </div>
+        </div>
+
+        @if(session('success'))
+            <div class="toast-container position-fixed top-0 end-0 p-3">
+                <div id="liveToast" class="toast align-items-center text-bg-success border-0" role="alert">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            {{ session('success') }}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                    </div>
+                </div>
+            </div>
+        @endif
+    </div>
+    <script src="{{ asset('js/admin.user.js') }}"></script>
+@endsection
