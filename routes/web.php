@@ -30,6 +30,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('admin/page', [PageController::class, 'show'])->name('admin.page');
     Route::get('admin/page/add', [PageController::class, 'add'])->name('admin.page.add');
     Route::post('admin/page/insert', [PageController::class, 'insert']);
+    Route::post('admin/page/update/{id}', [PageController::class, 'update']);
 
     Route::get('admin/role/permission', [PermissionController::class, 'permission']);
     Route::get('admin/role', [PermissionController::class, 'showRole']);
