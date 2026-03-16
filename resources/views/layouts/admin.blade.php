@@ -56,7 +56,7 @@
         <div id="page-body" class="d-flex">
             <div id="sidebar" class="bg-dark">
                 <ul id="sidebar-menu">
-                    <li class="nav-link">
+                    <li class="nav-link {{ request()->is('admin/') ? 'active' : '' }}">
                         <a href="{{ url('/admin') }}">
                             <div class="nav-link-icon d-inline-flex">
                                 <i class="fa-solid fa-chart-line"></i>
@@ -64,7 +64,7 @@
                             Dashboard
                         </a>
                     </li>
-                    <li class="nav-link">
+                    <li class="nav-link {{ request()->is('admin/page*') ? 'active' : '' }}">
                         <a href="{{ url('/admin/page') }}">
                             <div class="nav-link-icon d-inline-flex">
                                 <i class="fa-regular fa-file"></i>
@@ -78,7 +78,7 @@
                             <li><a href="{{ url('/admin/page') }}">Danh sách</a></li>
                         </ul>
                     </li>
-                    <li class="nav-link">
+                    <li class="nav-link {{ request()->is('admin/post*') ? 'active' : '' }}">
                         <a href="{{ url('/admin/post') }}">
                             <div class="nav-link-icon d-inline-flex">
                                 <i class="fa-regular fa-newspaper"></i>
@@ -92,7 +92,7 @@
                             <li><a href="{{ url('/admin/post/cat') }}">Danh mục</a></li>
                         </ul>
                     </li>
-                    <li class="nav-link">
+                    <li class="nav-link {{ request()->is('admin/product*') ? 'active' : '' }}">
                         <a href="{{ url('/admin/product') }}">
                             <div class="nav-link-icon d-inline-flex">
                                 <i class="fa-solid fa-cube"></i>
@@ -106,7 +106,7 @@
                             <li><a href="{{ url('/admin/product/cat') }}">Danh mục</a></li>
                         </ul>
                     </li>
-                    <li class="nav-link">
+                    <li class="nav-link {{ request()->is('admin/order*') ? 'active' : '' }}">
                         <a href="{{ url('/admin/order') }}">
                             <div class="nav-link-icon d-inline-flex">
                                 <i class="fa-solid fa-tags"></i>
@@ -118,7 +118,7 @@
                             <li><a href="{{ url('/admin/order') }}">Đơn hàng</a></li>
                         </ul>
                     </li>
-                    <li class="nav-link">
+                    <li class="nav-link {{ request()->is('admin/user*') ? 'active' : '' }}">
                         <a href="{{ url('/admin/user') }}">
                             <div class="nav-link-icon d-inline-flex">
                                 <i class="fa-regular fa-user"></i>
@@ -132,16 +132,16 @@
                             <li><a href="{{ url('/admin/user') }}">Danh sách</a></li>
                         </ul>
                     </li>
-                    <li class="nav-link active">
-                        <a href="{{ url('/admin/permission') }}">
+                    <li class="nav-link {{ request()->is('admin/role*') ? 'active' : '' }}">
+                        <a href="{{ url('/admin/role/permission') }}">
                             <div class="nav-link-icon d-inline-flex">
                                 <i class="fa-solid fa-unlock"></i>
                             </div>
                             Phân quyền
                         </a>
-                        <i class="arrow fas fa-angle-down text-pink-light"></i>
+                        <i class="arrow fas fa-angle-right text-pink-light"></i>
                         <ul class="sub-menu">
-                            <li><a href="{{ url('/admin/permission') }}">Quyền</a></li>
+                            <li><a href="{{ url('/admin/role/permission') }}">Quyền</a></li>
                             <li><a href="{{ url('/admin/role/add') }}">Thêm vai trò</a></li>
                             <li><a href="{{ url('/admin/role') }}">Danh sách vai trò</a></li>
                         </ul>
