@@ -1,7 +1,6 @@
 @extends('layouts.admin')
 
 @section('content')
-    {{ $pages }}
     <div id="content" class="container-fluid">
         <div class="card">
             <div class="card-header font-weight-bold d-flex justify-content-between align-items-center">
