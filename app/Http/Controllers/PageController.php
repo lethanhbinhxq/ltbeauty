@@ -83,4 +83,12 @@ class PageController extends Controller
 
         return redirect('admin/page')->with('success', 'Cập nhật trang thành công');
     }
+
+    public function destroy($id)
+    {
+        $page = Page::find($id);
+        $page->delete();
+
+        return redirect('admin/page')->with('success', 'Xóa người dùng thành công.');
+    }
 }

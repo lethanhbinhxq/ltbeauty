@@ -71,8 +71,10 @@
                                             data-bs-title="{{ $page->title }}" 
                                             data-bs-detail="{{ $page->detail }}" data-bs-status="{{ $page->status }}"><i
                                                 class="fa fa-edit"></i></button>
-                                        <button class="btn btn-danger btn-sm rounded-2" type="button" data-toggle="tooltip"
-                                            data-placement="top" title="Delete"><i class="fa fa-trash"></i></button>
+                                        <button type="button" class="btn btn-danger btn-sm rounded-2 text-white"
+                                            data-toggle="tooltip" data-placement="top" title="Delete" data-bs-toggle="modal"
+                                            data-bs-target="#deletePageModal" data-bs-id="{{ $page->id }}"
+                                            data-title="{{ $page->title }}"><i class="fa fa-trash"></i></button>
                                     </td>
 
                                 </tr>
@@ -82,9 +84,9 @@
                 </table>
                 {{ $pages->links() }}
 
-                @include('admin.page.edit')
             </div>
         </div>
+        @include('admin.page.delete')
     </div>
     <script src="{{ asset('js/admin.page.js') }}"></script>
 @endsection

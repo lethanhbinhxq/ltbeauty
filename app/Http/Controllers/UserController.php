@@ -99,7 +99,7 @@ class UserController extends Controller
 
     public function destroy($id)
     {
-        $user = User::findOrFail($id);
+        $user = User::find($id);
         $user->delete();
 
         return redirect('admin/user')->with('success', 'Xóa người dùng thành công.');
