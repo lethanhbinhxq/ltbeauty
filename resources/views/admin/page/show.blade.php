@@ -65,12 +65,10 @@
                                     @endif
                                     <td>{{ $page->created_at->timezone('Asia/Ho_Chi_Minh')->format('d/m/Y H:i:s') }}</td>
                                     <td>
-                                        <button class="btn btn-success btn-sm rounded-2 text-white" type="button"
-                                            data-toggle="tooltip" data-placement="top" title="Edit" data-bs-toggle="modal"
-                                            data-bs-target="#editPageModal" data-bs-id="{{ $page->id }}"
-                                            data-bs-title="{{ $page->title }}" 
-                                            data-bs-detail="{{ $page->detail }}" data-bs-status="{{ $page->status }}"><i
-                                                class="fa fa-edit"></i></button>
+                                        <a href="{{ route('admin.page.edit', $page->id) }}"
+                                            class="btn btn-success btn-sm rounded-2 text-white" title="Edit">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
                                         <button type="button" class="btn btn-danger btn-sm rounded-2 text-white"
                                             data-toggle="tooltip" data-placement="top" title="Delete" data-bs-toggle="modal"
                                             data-bs-target="#deletePageModal" data-bs-id="{{ $page->id }}"

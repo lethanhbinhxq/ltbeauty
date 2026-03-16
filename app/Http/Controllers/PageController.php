@@ -52,6 +52,12 @@ class PageController extends Controller
         return redirect('admin/page')->with('success', 'Thêm bài viết thành công');
     }
 
+    public function edit($id)
+    {
+        $page = Page::find($id);
+        return view('admin.page.edit', compact('page'));
+    }
+
     public function update(Request $request, $id)
     {
         $request->validate(
