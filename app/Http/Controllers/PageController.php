@@ -14,9 +14,12 @@ class PageController extends Controller
         return view('admin.page.add');
     }
 
-    public function show()
+    public function show(Request $request)
     {
-        $pages = Page::paginate(1);
+        if ($request) {
+            $pages = Page::where('title', 'like', '%' . $request->keyword . '%');
+        }
+        $pages = $pages->paginate(10);
         $num_public = Page::where('status', Page::STATUS_PUBLIC)->count();
         $num_pending = Page::where('status', Page::STATUS_PENDING)->count();
         return view("admin.page.show", compact('pages', 'num_public', 'num_pending'));

@@ -5,8 +5,8 @@
         <div class="card">
             <div class="card-header font-weight-bold d-flex justify-content-between align-items-center">
                 <h5 class="m-0 ">Danh sách trang</h5>
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Tìm kiếm">
+                <form class="d-flex" role="search" method="GET" action="">
+                    <input class="form-control me-2" type="search" placeholder="Tìm kiếm" name="keyword" value="{{ request('keyword') }}">
                     <button class="btn btn-outline-primary" type="submit">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </button>
@@ -80,7 +80,7 @@
                         </tbody>
                     @endif
                 </table>
-                {{ $pages->links() }}
+                {{ $pages->appends(request()->query())->links() }}
 
             </div>
         </div>
