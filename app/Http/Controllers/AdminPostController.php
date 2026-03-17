@@ -87,4 +87,12 @@ class AdminPostController extends Controller
 
         return redirect('admin/post/cat')->with('success', 'Cập nhật danh mục bài viết thành công');
     }
+
+    public function destroy($id)
+    {
+        $page = PostCat::find($id);
+        $page->delete();
+
+        return redirect('admin/post/cat')->with('success', 'Xóa danh mục bài viết thành công.');
+    }
 }

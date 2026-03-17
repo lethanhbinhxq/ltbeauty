@@ -97,7 +97,7 @@
                                             <button type="button" class="btn btn-danger btn-sm rounded-2 text-white"
                                                 data-toggle="tooltip" data-placement="top" title="Delete" data-bs-toggle="modal"
                                                 data-bs-target="#deletePostCatModal" data-bs-id="{{ $cat->id }}"
-                                                data-title="{{ $cat->name }}"><i class="fa fa-trash"></i></button>
+                                                data-bs-name="{{ $cat->name }}"><i class="fa fa-trash"></i></button>
                                         </td>
                                     </tr>
                                 @endforeach
