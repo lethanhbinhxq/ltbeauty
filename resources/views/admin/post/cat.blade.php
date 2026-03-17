@@ -60,36 +60,53 @@
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">First</th>
-                                    <th scope="col">Last</th>
-                                    <th scope="col">Handle</th>
+                                    <th scope="col">Tên</th>
+                                    <th scope="col">Danh mục cha</th>
+                                    <th scope="col">Trạng thái</th>
+                                    <th scope="col">Ngày tạo</th>
+                                    <th scope="col">Tác vụ</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td>Larry</td>
-                                    <td>the Bird</td>
-                                    <td>@twitter</td>
-                                </tr>
+                                @php
+                                    $t = 0;
+                                @endphp
+                                @foreach ($cats_paginate as $cat)
+                                    @php
+                                        $t++;
+                                    @endphp
+                                    <tr>
+                                        <th scope="row">{{ $t }}</th>
+                                        <td>{{ $cat->name }}</td>
+                                        <td>{{ $cat->parent ? $cat->parent->name : '-' }}</td>
+                                        @if($cat->status == App\Models\PostCat::STATUS_PUBLIC)
+                                            <td><span class="badge text-bg-success">Công khai</span></td>
+                                        @else
+                                            <td><span class="badge text-bg-warning">Chờ duyệt</span></td>
+                                        @endif
+
+                                        <td>{{ $cat->created_at->timezone('Asia/Ho_Chi_Minh')->format('d/m/Y H:i:s') }}</td>
+
+                                        <td>
+                                            <a href=""
+                                                class="btn btn-success btn-sm rounded-2 text-white" title="Edit">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                            <button type="button" class="btn btn-danger btn-sm rounded-2 text-white"
+                                                data-toggle="tooltip" data-placement="top" title="Delete" data-bs-toggle="modal"
+                                                data-bs-target="#deletePostCatModal" data-bs-id="{{ $cat->id }}"
+                                                data-title="{{ $cat->name }}"><i class="fa fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
+
+                        {{ $cats_paginate->links() }}
                     </div>
                 </div>
             </div>
         </div>
-
+        @include('admin.post.catDelete')
     </div>
 @endsection

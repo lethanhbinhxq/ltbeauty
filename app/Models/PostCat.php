@@ -15,4 +15,8 @@ class PostCat extends Model
         'parent_id',
         'status',
     ];
+
+    public function parent() {
+        return $this->belongsTo(PostCat::class, 'parent_id');
+    }
 }

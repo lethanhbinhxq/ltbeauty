@@ -19,7 +19,8 @@ class AdminPostController extends Controller
 
     public function cat() {
         $cats = PostCat::all();
-        return view('admin.post.cat', compact('cats'));
+        $cats_paginate = PostCat::paginate(10);
+        return view('admin.post.cat', compact('cats', 'cats_paginate'));
     }
 
     public function addCat(Request $request) {
