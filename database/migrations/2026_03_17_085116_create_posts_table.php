@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('cat_id');
             $table->foreign('cat_id')->references('id')->on('post_cats')->onDelete('cascade');
             $table->string('thumbnail', 255);
+            $table->enum('status', ['pending', 'public']);
             $table->timestamps();
         });
     }

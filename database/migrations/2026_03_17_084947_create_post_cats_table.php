@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name', 255);
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->foreign('parent_id')->references('id')->on('post_cats')->onDelete('set null');
+            $table->enum('status', ['pending', 'public']);
             $table->timestamps();
         });
     }

@@ -9,34 +9,35 @@
                         Thêm danh mục
                     </div>
                     <div class="card-body">
-                        <form>
-                            <div class="form-group">
+                        <form method="POST" action="{{ url('/admin/post/cat/add') }}">
+                            @csrf
+                            <div class="mb-3">
                                 <label for="name">Tên danh mục</label>
                                 <input class="form-control" type="text" name="name" id="name">
                             </div>
-                            <div class="form-group">
+                            <div class="mb-3">
                                 <label for="">Danh mục cha</label>
-                                <select class="form-control" id="">
-                                    <option>Chọn danh mục</option>
-                                    <option>Danh mục 1</option>
-                                    <option>Danh mục 2</option>
-                                    <option>Danh mục 3</option>
-                                    <option>Danh mục 4</option>
+                                <select class="form-control" id="parent_id" name="parent_id">
+                                    <option value="">------Chọn danh mục------</option>
+                                    @foreach ($cats as $cat)
+                                        <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
-                            <div class="form-group">
+
+                            <div class="mb-3">
                                 <label for="">Trạng thái</label>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1"
-                                        value="option1" checked>
-                                    <label class="form-check-label" for="exampleRadios1">
+                                    <input class="form-check-input" type="radio" name="status" id="status1"
+                                        value="{{App\Models\PostCat::STATUS_PENDING}}" checked>
+                                    <label class="form-check-label" for="status1">
                                         Chờ duyệt
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2"
-                                        value="option2">
-                                    <label class="form-check-label" for="exampleRadios2">
+                                    <input class="form-check-input" type="radio" name="status" id="status2"
+                                        value="{{App\Models\PostCat::STATUS_PUBLIC}}">
+                                    <label class="form-check-label" for="status2">
                                         Công khai
                                     </label>
                                 </div>

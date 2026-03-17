@@ -52,7 +52,7 @@ class AdminPageController extends Controller
             'status' => $request->status,
         ]);
 
-        return redirect('admin/page')->with('success', 'Thêm bài viết thành công');
+        return redirect('admin/page')->with('success', 'Thêm trang thành công');
     }
 
     public function edit($id)
