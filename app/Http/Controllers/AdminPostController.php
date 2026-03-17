@@ -59,9 +59,19 @@ class AdminPostController extends Controller
         return redirect('admin/post')->with('success', 'Thêm bài viết thành công');
     }
 
-    public function show()
+    public function show(Request $request)
     {
-        return view('admin.post.show');
+        if ($request) {
+            $posts = Post::where('title', 'like', '%' . $request->keyword . '%');
+        }
+        $posts = $posts->paginate(10);
+        $num_public = Post::where('status', Post::STATUS_PUBLIC)->count();
+        $num_pending = Post::where('status', Post::STATUS_PENDING)->count();
+        return view('admin.post.show', compact([
+            'posts',
+            'num_public',
+            'num_pending'
+        ]));
     }
 
     public function cat()

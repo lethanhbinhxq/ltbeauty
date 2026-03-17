@@ -15,4 +15,8 @@ class Post extends Model
         'thumbnail',
         'status'
     ];
+
+    public function cat() {
+        return $this->hasOne(PostCat::class, 'id');
+    }
 }
