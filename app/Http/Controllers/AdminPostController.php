@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Post;
 use App\Models\PostCat;
 use Illuminate\Http\Request;
 
@@ -11,7 +12,51 @@ class AdminPostController extends Controller
     //
     public function add()
     {
-        return view('admin.post.add');
+        $post_cats = PostCat::all();
+        return view('admin.post.add', compact('post_cats'));
+    }
+
+    public function insert(Request $request)
+    {
+        $request->validate(
+            [
+                'title' => 'required|string|max:255',
+                'detail' => 'required',
+                'cat_id' => 'integer|exists:post_cats,id',
+                'status' => 'required|in:' . Post::STATUS_PENDING . ',' . Post::STATUS_PUBLIC,
+            ],
+            [
+                'required' => ':attribute không được để trống.',
+                'string' => ':attribute phải là chuỗi.',
+                'max' => ':attribute có tối đa :min ký tự.',
+                'in' => ':attribute không hợp lệ.',
+            ],
+            [
+                'title' => 'Tiêu đề',
+                'detail' => 'Nội dung',
+                'status' => 'Trạng thái',
+            ]
+        );
+
+        $thumbnail = "";
+        if ($request->hasFile('thumbnail')) {
+            $file = $request->thumbnail;
+            // Lấy tên file
+            $filename = $file->getClientOriginalName();
+
+            $file->move('public/uploads', $filename);
+            $thumbnail = 'public/uploads/' . $filename;
+        }
+
+        Post::create([
+            'title' => $request->title,
+            'detail' => $request->detail,
+            'thumbnail' => $thumbnail,
+            'cat_id' => $request->cat_id,
+            'status' => $request->status,
+        ]);
+
+        return redirect('admin/post')->with('success', 'Thêm bài viết thành công');
     }
 
     public function show()
