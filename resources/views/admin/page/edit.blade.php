@@ -15,11 +15,8 @@
 
                     <div class="mb-3">
                         <label for="title">Tiêu đề bài viết</label>
-                        <input class="form-control @error('title') is-invalid @enderror"
-                               type="text"
-                               name="title"
-                               id="title"
-                               value="{{ old('title', $page->title) }}">
+                        <input class="form-control @error('title') is-invalid @enderror" type="text" name="title" id="title"
+                            value="{{ $page->title }}">
                         @error('title')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
@@ -27,11 +24,8 @@
 
                     <div class="mb-3">
                         <label for="detail">Nội dung bài viết</label>
-                        <textarea name="detail"
-                                  class="form-control @error('detail') is-invalid @enderror"
-                                  id="detail"
-                                  cols="30"
-                                  rows="15">{{ old('detail', $page->detail) }}</textarea>
+                        <textarea name="detail" class="form-control @error('detail') is-invalid @enderror" id="detail"
+                            cols="30" rows="15">{{ $page->detail }}</textarea>
                         @error('detail')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
@@ -41,24 +35,18 @@
                         <label>Trạng thái</label>
 
                         <div class="form-check">
-                            <input class="form-check-input"
-                                   type="radio"
-                                   name="status"
-                                   id="status1"
-                                   value="{{ App\Models\Page::STATUS_PENDING }}"
-                                   {{ old('status', $page->status) == App\Models\Page::STATUS_PENDING ? 'checked' : '' }}>
+                            <input class="form-check-input" type="radio" name="status" id="status1"
+                                value="{{ App\Models\Page::STATUS_PENDING }}"
+                                @checked($page->status == App\Models\Page::STATUS_PENDING)>
                             <label class="form-check-label" for="status1">
                                 Chờ duyệt
                             </label>
                         </div>
 
                         <div class="form-check">
-                            <input class="form-check-input"
-                                   type="radio"
-                                   name="status"
-                                   id="status2"
-                                   value="{{ App\Models\Page::STATUS_PUBLIC }}"
-                                   {{ old('status', $page->status) == App\Models\Page::STATUS_PUBLIC ? 'checked' : '' }}>
+                            <input class="form-check-input" type="radio" name="status" id="status2"
+                                value="{{ App\Models\Page::STATUS_PUBLIC }}"
+                                @checked($page->status == App\Models\Page::STATUS_PUBLIC)>
                             <label class="form-check-label" for="status2">
                                 Công khai
                             </label>

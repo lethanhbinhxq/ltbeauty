@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Post;
 use App\Models\PostCat;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class AdminPostController extends Controller
 {
@@ -44,11 +45,63 @@ class AdminPostController extends Controller
             // Lấy tên file
             $filename = $file->getClientOriginalName();
 
-            $file->move('public/uploads', $filename);
-            $thumbnail = 'public/uploads/' . $filename;
+            $file->move('uploads', $filename);
+            $thumbnail = 'uploads/' . $filename;
         }
 
         Post::create([
+            'title' => $request->title,
+            'detail' => $request->detail,
+            'slug' => Str::slug($request->title),
+            'thumbnail' => $thumbnail,
+            'cat_id' => $request->cat_id,
+            'status' => $request->status,
+        ]);
+
+        return redirect('admin/post')->with('success', 'Thêm bài viết thành công');
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate(
+            [
+                'title' => 'required|string|max:255',
+                'detail' => 'required',
+                'cat_id' => 'nullable|integer|exists:post_cats,id',
+                'status' => 'required|in:' . Post::STATUS_PENDING . ',' . Post::STATUS_PUBLIC,
+                'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:5120',
+            ],
+            [
+                'required' => ':attribute không được để trống.',
+                'string' => ':attribute phải là chuỗi.',
+                'max' => ':attribute có tối đa :max ký tự.',
+                'integer' => ':attribute phải là số.',
+                'exists' => ':attribute không tồn tại.',
+                'in' => ':attribute không hợp lệ.',
+                'image' => ':attribute phải là tệp hình ảnh.',
+                'mimes' => ':attribute phải có định dạng: :values.',
+            ],
+            [
+                'title' => 'Tiêu đề',
+                'detail' => 'Nội dung',
+                'cat_id' => 'Danh mục',
+                'status' => 'Trạng thái',
+                'thumbnail' => 'Ảnh đại diện',
+            ]
+        );
+
+        $post = Post::find($id);
+
+        $thumbnail = $post->thumbnail;
+
+        if ($request->hasFile('thumbnail')) {
+            $file = $request->file('thumbnail');
+            $filename = $file->getClientOriginalName();
+            $file->move('uploads', $filename);
+            $thumbnail = 'uploads/' . $filename;
+        }
+
+        $post->update([
             'title' => $request->title,
             'detail' => $request->detail,
             'thumbnail' => $thumbnail,
@@ -56,7 +109,7 @@ class AdminPostController extends Controller
             'status' => $request->status,
         ]);
 
-        return redirect('admin/post')->with('success', 'Thêm bài viết thành công');
+        return redirect('admin/post')->with('success', 'Cập nhật bài viết thành công');
     }
 
     public function show(Request $request)
@@ -72,6 +125,13 @@ class AdminPostController extends Controller
             'num_public',
             'num_pending'
         ]));
+    }
+
+    public function edit($id)
+    {
+        $post_cats = PostCat::all();
+        $post = Post::find($id);
+        return view('admin.post.edit', compact('post', 'post_cats'));
     }
 
     public function cat()

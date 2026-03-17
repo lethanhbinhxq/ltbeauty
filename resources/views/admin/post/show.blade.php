@@ -6,7 +6,8 @@
             <div class="card-header font-weight-bold d-flex justify-content-between align-items-center">
                 <h5 class="m-0 ">Danh sách bài viết</h5>
                 <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Tìm kiếm" name="keyword" value="{{ request('keyword') }}">
+                    <input class="form-control me-2" type="search" placeholder="Tìm kiếm" name="keyword"
+                        value="{{ request('keyword') }}">
                     <button class="btn btn-outline-primary" type="submit">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </button>
@@ -65,8 +66,11 @@
                                 @else
                                     <td><span class="badge text-bg-warning">Chờ duyệt</span></td>
                                 @endif
-                                <td><button class="btn btn-success btn-sm rounded-2" type="button" data-toggle="tooltip"
-                                        data-placement="top" title="Edit"><i class="fa fa-edit"></i></button>
+                                <td>
+                                    <a href="{{ route('admin.post.edit', $post->id) }}"
+                                        class="btn btn-success btn-sm rounded-2 text-white" title="Edit">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
                                     <button class="btn btn-danger btn-sm rounded-2" type="button" data-toggle="tooltip"
                                         data-placement="top" title="Delete"><i class="fa fa-trash"></i></button>
                                 </td>

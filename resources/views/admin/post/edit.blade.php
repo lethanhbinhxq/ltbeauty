@@ -3,64 +3,92 @@
 @section('content')
     <script src="https://cdn.tiny.cloud/1/00l9mte9oevy90w9i5vhjv1vhbtlwbe0y07rbncfhtqa2gy4/tinymce/5/tinymce.min.js"
         referrerpolicy="origin" crossorigin="anonymous"></script>
+
     <div id="content" class="container-fluid">
         <div class="card">
             <div class="card-header font-weight-bold">
-                Thêm bài viết
+                Chỉnh sửa bài viết
             </div>
+
             <div class="card-body">
-                <form method="POST" action="{{ url('admin/post/insert') }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ url('admin/post/update/' . $post->id) }}" enctype="multipart/form-data">
                     @csrf
+
                     <div class="mb-3">
                         <label for="title">Tiêu đề bài viết</label>
-                        <input class="form-control @error('title') is-invalid @enderror" type="text" name="title"
-                            id="title">
+                        <input class="form-control @error('title') is-invalid @enderror" type="text" name="title" id="title"
+                            value="{{ $post->title }}">
                         @error('title')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
+
                     <div class="mb-3">
                         <label for="detail">Nội dung bài viết</label>
                         <textarea name="detail" class="form-control @error('detail') is-invalid @enderror" id="detail"
-                            cols="30" rows="15"></textarea>
+                            cols="30" rows="15">{{ $post->detail }}</textarea>
                         @error('detail')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
 
                     <div class="mb-3">
+                        <label for="thumbnail">Ảnh đại diện</label>
                         <input type="file" name="thumbnail" id="thumbnail" class="form-control">
+
+                        @if ($post->thumbnail)
+                            <div class="mt-2">
+                                <img src="{{ asset($post->thumbnail) }}" alt="{{ $post->title }}" width="120">
+                            </div>
+                        @endif
+
+                        @error('thumbnail')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
 
                     <div class="mb-3">
-                        <label for="">Danh mục</label>
+                        <label for="cat_id">Danh mục</label>
                         <select class="form-control" id="cat_id" name="cat_id">
                             <option value="">------Chọn danh mục------</option>
                             @foreach ($post_cats as $cat)
-                                <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                                <option value="{{ $cat->id }}" @selected($post->cat_id == $cat->id)>
+                                    {{ $cat->name }}
+                                </option>
                             @endforeach
                         </select>
+                        @error('cat_id')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
 
                     <div class="mb-3">
-                        <label for="">Trạng thái</label>
+                        <label>Trạng thái</label>
+
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="status" id="status1"
-                                value="{{App\Models\Post::STATUS_PENDING}}" checked>
+                                value="{{ App\Models\Post::STATUS_PENDING }}"
+                                @checked($post->status == App\Models\Post::STATUS_PENDING)>
                             <label class="form-check-label" for="status1">
                                 Chờ duyệt
                             </label>
                         </div>
+
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="status" id="status2"
-                                value="{{App\Models\Post::STATUS_PUBLIC}}">
+                                value="{{ App\Models\Post::STATUS_PUBLIC }}"
+                                @checked($post->status == App\Models\Post::STATUS_PUBLIC)>
                             <label class="form-check-label" for="status2">
                                 Công khai
                             </label>
                         </div>
+
+                        @error('status')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Thêm mới</button>
+                    <button type="submit" class="btn btn-primary">Cập nhật</button>
                 </form>
             </div>
         </div>
@@ -69,7 +97,7 @@
     <script>
         var editor_config = {
             path_absolute: "http://127.0.0.1:8000/",
-            selector: 'textarea#detail',
+            selector: "textarea#detail",
             relative_urls: false,
             plugins: [
                 "advlist autolink lists link image charmap print preview hr anchor pagebreak",
@@ -79,11 +107,12 @@
             ],
             toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media",
             file_picker_callback: function (callback, value, meta) {
-                var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
-                var y = window.innerHeight || document.documentElement.clientHeight || document.getElementsByTagName('body')[0].clientHeight;
+                var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName("body")[0].clientWidth;
+                var y = window.innerHeight || document.documentElement.clientHeight || document.getElementsByTagName("body")[0].clientHeight;
 
-                var cmsURL = editor_config.path_absolute + 'laravel-filemanager?editor=' + meta.fieldname;
-                if (meta.filetype == 'image') {
+                var cmsURL = editor_config.path_absolute + "laravel-filemanager?editor=" + meta.fieldname;
+
+                if (meta.filetype == "image") {
                     cmsURL = cmsURL + "&type=Images";
                 } else {
                     cmsURL = cmsURL + "&type=Files";
@@ -91,7 +120,7 @@
 
                 tinyMCE.activeEditor.windowManager.openUrl({
                     url: cmsURL,
-                    title: 'Filemanager',
+                    title: "Filemanager",
                     width: x * 0.8,
                     height: y * 0.8,
                     resizable: "yes",

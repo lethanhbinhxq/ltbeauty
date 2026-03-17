@@ -41,6 +41,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('admin/post', [AdminPostController::class, 'show']);
     Route::get('admin/post/add', [AdminPostController::class, 'add']);
     Route::post('admin/post/insert', [AdminPostController::class, 'insert']);
+    Route::get('admin/post/edit/{id}', [AdminPostController::class, 'edit'])->name('admin.post.edit');
+    Route::post('admin/post/update/{id}', [AdminPostController::class, 'update'])->name('admin.post.update');
     Route::get('admin/post/cat', [AdminPostController::class, 'cat']);
     Route::post('admin/post/cat/add', [AdminPostController::class, 'addCat']);
     Route::post('admin/post/cat/edit/{id}', [AdminPostController::class, 'editCat']);
