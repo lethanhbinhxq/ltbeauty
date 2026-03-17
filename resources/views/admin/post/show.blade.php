@@ -71,8 +71,10 @@
                                         class="btn btn-success btn-sm rounded-2 text-white" title="Edit">
                                         <i class="fa fa-edit"></i>
                                     </a>
-                                    <button class="btn btn-danger btn-sm rounded-2" type="button" data-toggle="tooltip"
-                                        data-placement="top" title="Delete"><i class="fa fa-trash"></i></button>
+                                    <button type="button" class="btn btn-danger btn-sm rounded-2 text-white"
+                                            data-toggle="tooltip" data-placement="top" title="Delete" data-bs-toggle="modal"
+                                            data-bs-target="#deletePostModal" data-bs-id="{{ $post->id }}"
+                                            data-title="{{ $post->title }}"><i class="fa fa-trash"></i></button>
                                 </td>
 
                             </tr>
@@ -83,5 +85,7 @@
                 {{ $posts->appends(request()->query())->links() }}
             </div>
         </div>
+        @include('admin.post.delete')
+        <script src="{{ asset('js/admin.post.js') }}"></script>
     </div>
 @endsection

@@ -134,6 +134,14 @@ class AdminPostController extends Controller
         return view('admin.post.edit', compact('post', 'post_cats'));
     }
 
+    public function destroy($id)
+    {
+        $post = Post::find($id);
+        $post->delete();
+
+        return redirect('admin/post')->with('success', 'Xóa bài viết thành công.');
+    }
+
     public function cat()
     {
         $cats = PostCat::all();
@@ -203,10 +211,10 @@ class AdminPostController extends Controller
         return redirect('admin/post/cat')->with('success', 'Cập nhật danh mục bài viết thành công');
     }
 
-    public function destroy($id)
+    public function destroyCat($id)
     {
-        $page = PostCat::find($id);
-        $page->delete();
+        $cat = PostCat::find($id);
+        $cat->delete();
 
         return redirect('admin/post/cat')->with('success', 'Xóa danh mục bài viết thành công.');
     }

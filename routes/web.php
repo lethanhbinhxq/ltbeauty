@@ -43,10 +43,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('admin/post/insert', [AdminPostController::class, 'insert']);
     Route::get('admin/post/edit/{id}', [AdminPostController::class, 'edit'])->name('admin.post.edit');
     Route::post('admin/post/update/{id}', [AdminPostController::class, 'update'])->name('admin.post.update');
+    Route::delete('admin/post/delete/{id}', [AdminPostController::class, 'destroy'])->name('admin.post.delete');
     Route::get('admin/post/cat', [AdminPostController::class, 'cat']);
     Route::post('admin/post/cat/add', [AdminPostController::class, 'addCat']);
     Route::post('admin/post/cat/edit/{id}', [AdminPostController::class, 'editCat']);
-    Route::delete('admin/post/cat/delete/{id}', [AdminPostController::class, 'destroy']);
+    Route::delete('admin/post/cat/delete/{id}', [AdminPostController::class, 'destroyCat']);
 
     Route::get('admin/product', [AdminProductController::class, 'show']);
     Route::get('admin/product/add', [AdminProductController::class, 'add']);
