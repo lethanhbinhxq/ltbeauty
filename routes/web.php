@@ -53,6 +53,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('admin/product/add', [AdminProductController::class, 'add']);
     Route::get('admin/product/cat', [AdminProductController::class, 'cat']);
     Route::post('admin/product/cat/add', [AdminProductController::class, 'addCat']);
+    Route::post('admin/product/cat/edit/{id}', [AdminProductController::class, 'editCat']);
 
     Route::get('admin/user', [AdminUserController::class, 'show']);
     Route::get('admin/user/add', [AdminUserController::class, 'add']);

@@ -109,9 +109,9 @@
                 </div>
             </div>
         </div>
-        @include('admin.post.catDelete')
-        @include('admin.post.catEdit')
+        {{-- @include('admin.product.catDelete')--}}
+        @include('admin.product.catEdit')
 
-        <script src="{{ asset('js/admin.postCat.js') }}"></script>
+        <script src="{{ asset('js/admin.productCat.js') }}"></script>
     </div>
 @endsection
