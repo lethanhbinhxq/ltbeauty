@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     //
-    const STATUS_PUBLIC = 'public';
-    const STATUS_PENDING = 'pending';
+    const STATUS_IN_STOCK = 'in_stock';
+    const STATUS_OUT_OF_STOCK = 'out_of_stock';
     protected $fillable = [
         'name',
         'slug',
@@ -21,6 +21,6 @@ class Product extends Model
     ];
 
     public function cat() {
-        return $this->hasOne(PostCat::class, 'id');
+        return $this->hasOne(ProductCat::class, 'id');
     }
 }

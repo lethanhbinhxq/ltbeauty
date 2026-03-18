@@ -76,13 +76,13 @@
                         <label>Trạng thái</label>
 
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="status" value="pending" checked>
-                            <label class="form-check-label">Chờ duyệt</label>
+                            <input class="form-check-input" type="radio" id="in_stock" name="status" value="{{ App\Models\Product::STATUS_IN_STOCK }}" checked>
+                            <label class="form-check-label" for="in_stock">Còn hàng</label>
                         </div>
 
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="status" value="public">
-                            <label class="form-check-label">Công khai</label>
+                            <input class="form-check-input" type="radio" id="out_of_stock" name="status" value="{{ App\Models\Product::STATUS_OUT_OF_STOCK }}">
+                            <label class="form-check-label" for="out_of_stock">Hết hàng</label>
                         </div>
 
                         @error('status')

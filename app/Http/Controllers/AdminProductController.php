@@ -25,7 +25,7 @@ class AdminProductController extends Controller
                 'thumbnail' => 'required|image|mimes:jpg,jpeg,png,gif,webp|max:5120',
                 'detail' => 'required|string',
                 'cat' => 'required|exists:product_cats,id',
-                'status' => 'required|in:pending,public',
+                'status' => 'required|in:in_stock,out_of_stock',
             ],
             [
                 'required' => ':attribute không được để trống.',
@@ -71,8 +71,18 @@ class AdminProductController extends Controller
         return redirect('admin/product')->with('success', 'Thêm sản phẩm thành công.');
     }
 
-    public function show() {
-        return view('admin.product.show');
+    public function show(Request $request) {
+        if ($request) {
+            $products = Product::where('name', 'like', '%' . $request->keyword . '%');
+        }
+        $products = $products->paginate(10);
+        $num_in_stock = Product::where('status', Product::STATUS_IN_STOCK)->count();
+        $num_out_of_stock = Product::where('status', Product::STATUS_OUT_OF_STOCK)->count();
+        return view('admin.product.show', compact([
+            'products',
+            'num_in_stock',
+            'num_out_of_stock'
+        ]));
     }
 
     public function cat()

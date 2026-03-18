@@ -16,9 +16,7 @@
             </div>
             <div class="card-body">
                 <div class="analytic">
-                    <a href="" class="text-pink">Trạng thái 1<span class="text-muted">(10)</span></a>
-                    <a href="" class="text-pink">Trạng thái 2<span class="text-muted">(5)</span></a>
-                    <a href="" class="text-pink">Trạng thái 3<span class="text-muted">(20)</span></a>
+                    <a href="" class="text-pink">Hết hàng <span class="text-muted">({{ $num_out_of_stock }})</span></a>
                 </div>
                 <div class="d-flex align-items-center py-3 gap-2">
                     <select class="form-select w-auto">
@@ -48,103 +46,43 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="">
-                            <td>
-                                <input type="checkbox">
-                            </td>
-                            <td>1</td>
-                            <td><img src="http://via.placeholder.com/80X80" alt=""></td>
-                            <td><a href="#">Samsung Galaxy A51 (8GB/128GB)</a></td>
-                            <td>7.790.000₫</td>
-                            <td>Điện thoại</td>
-                            <td>26:06:2020 14:00</td>
-                            <td><span class="badge text-bg-success">Còn hàng</span></td>
-                            <td>
-                                <a href="#" class="btn btn-success btn-sm rounded-0 text-white" type="button"
-                                    data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></a>
-                                <a href="#" class="btn btn-danger btn-sm rounded-0 text-white" type="button"
-                                    data-toggle="tooltip" data-placement="top" title="Delete"><i
-                                        class="fa fa-trash"></i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox">
-                            </td>
-                            <td>2</td>
-                            <td><img src="http://via.placeholder.com/80X80" alt=""></td>
-                            <td><a href="#">Điện thoại iPhone 11 Pro Max 64GB</a></td>
-                            <td>29.490.000₫</td>
-                            <td>Điện thoại</td>
-                            <td>26:06:2020 14:00</td>
-                            <td><span class="badge text-bg-dark">Hết hàng</span></td>
-                            <td>
-                                <a href="#" class="btn btn-success btn-sm rounded-0 text-white" type="button"
-                                    data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></a>
-                                <a href="#" class="btn btn-danger btn-sm rounded-0 text-white" type="button"
-                                    data-toggle="tooltip" data-placement="top" title="Delete"><i
-                                        class="fa fa-trash"></i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox">
-                            </td>
-                            <td>3</td>
-                            <td><img src="http://via.placeholder.com/80X80" alt=""></td>
-                            <td><a href="#">Apple MacBook Pro Touch 2020 i5 512GB (MWP42SA/A)</a></td>
-                            <td>47.990.000₫</td>
-                            <td>Laptop</td>
-                            <td>26:06:2020 14:00</td>
-                            <td><span class="badge text-bg-success">Còn hàng</span></td>
-                            <td>
-                                <a href="#" class="btn btn-success btn-sm rounded-0 text-white" type="button"
-                                    data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></a>
-                                <a href="#" class="btn btn-danger btn-sm rounded-0 text-white" type="button"
-                                    data-toggle="tooltip" data-placement="top" title="Delete"><i
-                                        class="fa fa-trash"></i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox">
-                            </td>
-                            <td>4</td>
-                            <td><img src="http://via.placeholder.com/80X80" alt=""></td>
-                            <td><a href="#">MacBook Air 2017 128GB (MQD32SA/A)</a></td>
-                            <td>19.990.000₫</td>
-                            <td>Laptop</td>
-                            <td>26:06:2020 14:00</td>
-                            <td><span class="badge text-bg-success">Còn hàng</span></td>
-                            <td>
-                                <a href="#" class="btn btn-success btn-sm rounded-0 text-white" type="button"
-                                    data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></a>
-                                <a href="#" class="btn btn-danger btn-sm rounded-0 text-white" type="button"
-                                    data-toggle="tooltip" data-placement="top" title="Delete"><i
-                                        class="fa fa-trash"></i></a>
-                            </td>
-                        </tr>
+                        @php
+                            $t = 0;
+                        @endphp
+                        @foreach ($products as $product)
+                            <tr class="">
+                                @php
+                                    $t++;
+                                @endphp
+                                <td>
+                                    <input type="checkbox">
+                                </td>
+                                <td>{{ $t }}</td>
+                                <td><img src="{{ asset($product->thumbnail) }}" alt="" width="80"></td>
+                                <td><a href="#">{{ $product->name }}</a></td>
+                                <td>{{ number_format($product->price, 0, '', '.') }}đ</td>
+                                <td>{{ $product->cat->name }}</td>
+                                <td>{{ $product->created_at->timezone('Asia/Ho_Chi_Minh')->format('d/m/Y H:i:s') }}</td>
+                                @if($product->status == App\Models\Product::STATUS_IN_STOCK)
+                                    <td><span class="badge text-bg-success">Còn hàng</span></td>
+                                @else
+                                    <td><span class="badge text-bg-dark">Hết hàng</span></td>
+                                @endif
+                                <td>
+                                    <a href="{{ route('admin.product.edit', $product->id) }}"
+                                        class="btn btn-success btn-sm rounded-2 text-white" title="Edit">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <button type="button" class="btn btn-danger btn-sm rounded-2 text-white"
+                                        data-toggle="tooltip" data-placement="top" title="Delete" data-bs-toggle="modal"
+                                        data-bs-target="#deleteProductModal" data-bs-id="{{ $product->id }}"
+                                        data-title="{{ $product->name }}"><i class="fa fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination">
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">Trước</span>
-                                <span class="sr-only">Sau</span>
-                            </a>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                                <span class="sr-only">Next</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+                {{ $products->appends(request()->query())->links() }}
             </div>
         </div>
     </div>

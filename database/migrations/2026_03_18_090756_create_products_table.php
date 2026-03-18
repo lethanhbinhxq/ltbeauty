@@ -21,7 +21,7 @@ return new class extends Migration
             $table->text('detail');
             $table->unsignedBigInteger('cat_id');
             $table->foreign('cat_id')->references('id')->on('product_cats')->onDelete('cascade');
-            $table->enum('status', ['pending', 'public']);
+            $table->enum('status', ['in_stock', 'out_of_stock']);
             $table->timestamps();
         });
     }
