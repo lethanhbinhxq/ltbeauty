@@ -109,7 +109,7 @@
                 </div>
             </div>
         </div>
-        {{-- @include('admin.product.catDelete')--}}
+        @include('admin.product.catDelete')
         @include('admin.product.catEdit')
 
         <script src="{{ asset('js/admin.productCat.js') }}"></script>
