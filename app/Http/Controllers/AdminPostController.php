@@ -97,8 +97,8 @@ class AdminPostController extends Controller
         if ($request->hasFile('thumbnail')) {
             $file = $request->file('thumbnail');
             $filename = $file->getClientOriginalName();
-            $file->move('uploads', $filename);
-            $thumbnail = 'uploads/' . $filename;
+            $file->move('uploads/posts', $filename);
+            $thumbnail = 'uploads/posts/' . $filename;
         }
 
         $post->update([

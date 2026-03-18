@@ -3,14 +3,72 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 use App\Models\ProductCat;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class AdminProductController extends Controller
 {
     //
     public function add() {
-        return view('admin.product.add');
+        $cats = ProductCat::all();
+        return view('admin.product.add', compact('cats'));
+    }
+
+    public function insert(Request $request) {
+        $request->validate(
+            [
+                'name' => 'required|string|max:255',
+                'price' => 'required|integer|min:0',
+                'description' => 'required|string',
+                'thumbnail' => 'required|image|mimes:jpg,jpeg,png,gif,webp|max:5120',
+                'detail' => 'required|string',
+                'cat' => 'required|exists:product_cats,id',
+                'status' => 'required|in:pending,public',
+            ],
+            [
+                'required' => ':attribute không được để trống.',
+                'string' => ':attribute phải là chuỗi.',
+                'integer' => ':attribute phải là số nguyên.',
+                'min' => ':attribute không được nhỏ hơn :min.',
+                'max' => ':attribute không được vượt quá :max KB.',
+                'image' => ':attribute phải là file ảnh.',
+                'mimes' => ':attribute phải có định dạng: :values.',
+                'exists' => ':attribute không tồn tại.',
+                'in' => ':attribute không hợp lệ.',
+            ],
+            [
+                'name' => 'Tên sản phẩm',
+                'price' => 'Giá',
+                'description' => 'Mô tả sản phẩm',
+                'thumbnail' => 'Ảnh đại diện',
+                'detail' => 'Chi tiết sản phẩm',
+                'cat' => 'Danh mục',
+                'status' => 'Trạng thái',
+            ]
+        );
+
+        $thumbnail = null;
+
+        if ($request->hasFile('thumbnail')) {
+            $file = $request->file('thumbnail');
+            $thumbnail = $file->getClientOriginalName();
+            $file->move('uploads/products', $thumbnail);
+        }
+
+        Product::create([
+            'name' => $request->name,
+            'slug' => Str::slug($request->name),
+            'description' => $request->description,
+            'price' => $request->price,
+            'thumbnail' => 'uploads/products/' . $thumbnail,
+            'detail' => $request->detail,
+            'cat_id' => $request->cat,
+            'status' => $request->status,
+        ]);
+
+        return redirect('admin/product')->with('success', 'Thêm sản phẩm thành công.');
     }
 
     public function show() {
