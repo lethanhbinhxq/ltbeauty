@@ -1,12 +1,20 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    const toastEl = document.getElementById('liveToast');
+    const successToastEl = document.getElementById('successToast');
+    const errorToastEl = document.getElementById('errorToast');
 
-    if (toastEl) {
-        const toast = new bootstrap.Toast(toastEl, {
+    if (successToastEl) {
+        const successToast = new bootstrap.Toast(successToastEl, {
             delay: 4000
         });
-        toast.show();
+        successToast.show();
+    }
+
+    if (errorToastEl) {
+        const errorToast = new bootstrap.Toast(errorToastEl, {
+            delay: 4000
+        });
+        errorToast.show();
     }
 
 });

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AdminUserController extends Controller
@@ -99,9 +100,13 @@ class AdminUserController extends Controller
 
     public function destroy($id)
     {
-        $user = User::find($id);
-        $user->delete();
+        if (Auth::id() != $id) {
+            $user = User::find($id);
+            $user->delete();
 
-        return redirect('admin/user')->with('success', 'Xóa người dùng thành công.');
+            return redirect('admin/user')->with('success', 'Xóa người dùng thành công.');
+        } else {
+            return redirect('admin/user')->with('error', 'Bạn không thể tự xóa chính mình ra khỏi hệ thống.');
+        }
     }
 }
