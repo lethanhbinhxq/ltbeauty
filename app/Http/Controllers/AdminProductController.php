@@ -22,7 +22,7 @@ class AdminProductController extends Controller
                 'name' => 'required|string|max:255',
                 'price' => 'required|integer|min:0',
                 'description' => 'required|string',
-                'thumbnail' => 'required|image|mimes:jpg,jpeg,png,gif,webp|max:5120',
+                'thumbnail' => 'image|mimes:jpg,jpeg,png,gif,webp|max:5120',
                 'detail' => 'required|string',
                 'cat' => 'required|exists:product_cats,id',
                 'status' => 'required|in:in_stock,out_of_stock',
@@ -83,6 +83,69 @@ class AdminProductController extends Controller
             'num_in_stock',
             'num_out_of_stock'
         ]));
+    }
+
+    public function edit($id)
+    {
+        $product_cats = ProductCat::all();
+        $product = Product::find($id);
+        return view('admin.product.edit', compact('product', 'product_cats'));
+    }
+
+    public function update(Request $request, $id) {
+        $product = Product::find($id);
+        $request->validate(
+            [
+                'name' => 'required|string|max:255',
+                'price' => 'required|integer|min:0',
+                'description' => 'required|string',
+                'thumbnail' => 'image|mimes:jpg,jpeg,png,gif,webp|max:5120',
+                'detail' => 'required|string',
+                'cat' => 'required|exists:product_cats,id',
+                'status' => 'required|in:in_stock,out_of_stock',
+            ],
+            [
+                'required' => ':attribute không được để trống.',
+                'string' => ':attribute phải là chuỗi.',
+                'integer' => ':attribute phải là số nguyên.',
+                'min' => ':attribute không được nhỏ hơn :min.',
+                'max' => ':attribute không được vượt quá :max KB.',
+                'image' => ':attribute phải là file ảnh.',
+                'mimes' => ':attribute phải có định dạng: :values.',
+                'exists' => ':attribute không tồn tại.',
+                'in' => ':attribute không hợp lệ.',
+            ],
+            [
+                'name' => 'Tên sản phẩm',
+                'price' => 'Giá',
+                'description' => 'Mô tả sản phẩm',
+                'thumbnail' => 'Ảnh đại diện',
+                'detail' => 'Chi tiết sản phẩm',
+                'cat' => 'Danh mục',
+                'status' => 'Trạng thái',
+            ]
+        );
+
+        $thumbnail = $product->thumbnail;
+
+        if ($request->hasFile('thumbnail')) {
+            $file = $request->file('thumbnail');
+            $thumbnail = $file->getClientOriginalName();
+            $file->move('uploads/products', $thumbnail);
+            $thumbnail = 'uploads/products/' . $thumbnail;
+        }
+
+        $product->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'price' => $request->price,
+            'thumbnail' => $thumbnail,
+            'detail' => $request->detail,
+            'cat_id' => $request->cat,
+            'status' => $request->status,
+        ]);
+
+        return redirect('admin/product')->with('success', 'Cập nhật sản phẩm thành công.');
     }
 
     public function cat()
