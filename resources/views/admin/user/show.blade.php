@@ -79,16 +79,18 @@
                                                 data-bs-target="#editModal" data-bs-id="{{ $user->id }}"
                                                 data-bs-name="{{ $user->name }}" data-bs-status="{{ $user->status }}"><i
                                                     class="fa fa-edit"></i></button>
-                                            <button type="button" class="btn btn-danger btn-sm rounded-2 text-white"
-                                                data-toggle="tooltip" data-placement="top" title="Delete" data-bs-toggle="modal"
-                                                data-bs-target="#deleteModal" data-bs-id="{{ $user->id }}"
-                                                data-bs-name="{{ $user->name }}"><i class="fa fa-trash"></i></button>
+                                            @if (Auth::id() != $user->id)
+                                                <button type="button" class="btn btn-danger btn-sm rounded-2 text-white"
+                                                    data-toggle="tooltip" data-placement="top" title="Delete" data-bs-toggle="modal"
+                                                    data-bs-target="#deleteModal" data-bs-id="{{ $user->id }}"
+                                                    data-bs-name="{{ $user->name }}"><i class="fa fa-trash"></i></button>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach
-                                @else 
+                            @else
                                 <tr>
-                                    <td colspan="8"><p>Không tìm thấy bản ghi</p></td>
+                                    <td colspan="8">Không tìm thấy bản ghi</td>
                                 </tr>
                             @endif
 
