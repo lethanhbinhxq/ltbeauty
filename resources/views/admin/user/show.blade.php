@@ -7,7 +7,8 @@
                 <h5 class="m-0 ">Danh sách thành viên</h5>
                 <div class="form-search form-inline">
                     <form class="d-flex" role="search" method="GET" action="">
-                        <input class="form-control me-2" type="search" placeholder="Tìm kiếm" name="keyword" value="{{ request('keyword') }}">
+                        <input class="form-control me-2" type="search" placeholder="Tìm kiếm" name="keyword"
+                            value="{{ request('keyword') }}">
                         <button class="btn btn-outline-primary" type="submit">
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </button>
@@ -51,39 +52,46 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($users as $user)
-                                @php
-                                    $t++;
-                                @endphp
+                            @if ($users->total() > 0)
+                                @foreach ($users as $user)
+                                    @php
+                                        $t++;
+                                    @endphp
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox">
+                                        </td>
+                                        <th scope="row">{{$t}}</th>
+                                        <td>{{$user->name}}</td>
+                                        <td>{{$user->email}}</td>
+                                        <td>Admintrator</td>
+                                        @if($user->status == App\Models\User::STATUS_ACTIVE)
+                                            <td><span class="badge text-bg-success">Đang hoạt động</span></td>
+                                        @elseif ($user->status == App\Models\User::STATUS_PENDING)
+                                            <td><span class="badge text-bg-warning">Chờ xác thực</span></td>
+                                        @else
+                                            <td><span class="badge text-bg-danger">Bị khóa</span></td>
+                                        @endif
+                                        <td>{{ $user->created_at->timezone('Asia/Ho_Chi_Minh')->format('d/m/Y H:i:s') }}</td>
+                                        <td>
+                                            <button class="btn btn-success btn-sm rounded-2 text-white" type="button"
+                                                data-toggle="tooltip" data-placement="top" title="Edit" data-bs-toggle="modal"
+                                                data-bs-target="#editModal" data-bs-id="{{ $user->id }}"
+                                                data-bs-name="{{ $user->name }}" data-bs-status="{{ $user->status }}"><i
+                                                    class="fa fa-edit"></i></button>
+                                            <button type="button" class="btn btn-danger btn-sm rounded-2 text-white"
+                                                data-toggle="tooltip" data-placement="top" title="Delete" data-bs-toggle="modal"
+                                                data-bs-target="#deleteModal" data-bs-id="{{ $user->id }}"
+                                                data-bs-name="{{ $user->name }}"><i class="fa fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                @else 
                                 <tr>
-                                    <td>
-                                        <input type="checkbox">
-                                    </td>
-                                    <th scope="row">{{$t}}</th>
-                                    <td>{{$user->name}}</td>
-                                    <td>{{$user->email}}</td>
-                                    <td>Admintrator</td>
-                                    @if($user->status == App\Models\User::STATUS_ACTIVE)
-                                        <td><span class="badge text-bg-success">Đang hoạt động</span></td>
-                                    @elseif ($user->status == App\Models\User::STATUS_PENDING)
-                                        <td><span class="badge text-bg-warning">Chờ xác thực</span></td>
-                                    @else
-                                        <td><span class="badge text-bg-danger">Bị khóa</span></td>
-                                    @endif
-                                    <td>{{ $user->created_at->timezone('Asia/Ho_Chi_Minh')->format('d/m/Y H:i:s') }}</td>
-                                    <td>
-                                        <button class="btn btn-success btn-sm rounded-2 text-white" type="button"
-                                            data-toggle="tooltip" data-placement="top" title="Edit" data-bs-toggle="modal"
-                                            data-bs-target="#editModal" data-bs-id="{{ $user->id }}"
-                                            data-bs-name="{{ $user->name }}" data-bs-status="{{ $user->status }}"><i
-                                                class="fa fa-edit"></i></button>
-                                        <button type="button" class="btn btn-danger btn-sm rounded-2 text-white"
-                                            data-toggle="tooltip" data-placement="top" title="Delete" data-bs-toggle="modal"
-                                            data-bs-target="#deleteModal" data-bs-id="{{ $user->id }}"
-                                            data-bs-name="{{ $user->name }}"><i class="fa fa-trash"></i></button>
-                                    </td>
+                                    <td colspan="8"><p>Không tìm thấy bản ghi</p></td>
                                 </tr>
-                            @endforeach
+                            @endif
+
                         </tbody>
                     @endif
                 </table>
