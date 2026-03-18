@@ -85,5 +85,7 @@
                 {{ $products->appends(request()->query())->links() }}
             </div>
         </div>
+        @include('admin.product.delete')
+        <script src="{{ asset('js/admin.product.js') }}"></script>
     </div>
 @endsection

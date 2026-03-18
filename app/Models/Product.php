@@ -21,6 +21,6 @@ class Product extends Model
     ];
 
     public function cat() {
-        return $this->hasOne(ProductCat::class, 'id');
+        return $this->belongsTo(ProductCat::class, 'cat_id');
     }
 }

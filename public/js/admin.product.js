@@ -1,4 +1,4 @@
-var deleteModal = document.getElementById('deletePostModal');
+var deleteModal = document.getElementById('deleteProductModal');
 if (deleteModal) {
     deleteModal.addEventListener('show.bs.modal', function (event) {
         var button = event.relatedTarget;
@@ -7,7 +7,7 @@ if (deleteModal) {
         var id = button.getAttribute('data-bs-id');
         var title = button.getAttribute('data-title');
 
-        var modalTitle = deleteModal.querySelector('#delete-title');
+        var modalTitle = deleteModal.querySelector('#delete-name');
         var deleteForm = deleteModal.querySelector('#deleteForm');
 
         if (modalTitle) {
@@ -15,7 +15,7 @@ if (deleteModal) {
         }
 
         if (deleteForm) {
-            deleteForm.action = '/admin/post/delete/' + id;
+            deleteForm.action = '/admin/product/delete/' + id;
         }
     });
 }

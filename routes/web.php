@@ -54,6 +54,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('admin/product/insert', [AdminProductController::class, 'insert']);
     Route::get('admin/product/edit/{id}', [AdminProductController::class, 'edit'])->name('admin.product.edit');
     Route::post('admin/product/update/{id}', [AdminProductController::class, 'update'])->name('admin.product.update');
+    Route::delete('admin/product/delete/{id}', [AdminProductController::class, 'destroy'])->name('admin.product.delete');
     Route::get('admin/product/cat', [AdminProductController::class, 'cat']);
     Route::post('admin/product/cat/add', [AdminProductController::class, 'addCat']);
     Route::post('admin/product/cat/edit/{id}', [AdminProductController::class, 'editCat']);

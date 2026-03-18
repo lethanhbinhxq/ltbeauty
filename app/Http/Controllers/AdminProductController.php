@@ -148,6 +148,14 @@ class AdminProductController extends Controller
         return redirect('admin/product')->with('success', 'Cập nhật sản phẩm thành công.');
     }
 
+    public function destroy($id)
+    {
+        $product = Product::find($id);
+        $product->delete();
+
+        return redirect('admin/product')->with('success', 'Xóa sản phẩm thành công.');
+    }
+
     public function cat()
     {
         $cats = ProductCat::all();

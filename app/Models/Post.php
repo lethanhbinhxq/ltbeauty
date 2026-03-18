@@ -19,6 +19,6 @@ class Post extends Model
     ];
 
     public function cat() {
-        return $this->hasOne(PostCat::class, 'id');
+        return $this->belongsTo(PostCat::class, 'cat_id');
     }
 }
