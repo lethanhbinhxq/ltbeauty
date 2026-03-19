@@ -28,9 +28,10 @@
             <div class="card-body">
                 {{-- Filter links --}}
                 <div class="d-flex flex-wrap gap-2 mb-3 analytic">
-                    <a href="" class="text-pink">Đang xử lý <span class="text-muted">(10)</span></a>
-                    <a href="" class="text-pink">Hoàn thành <span class="text-muted">(20)</span></a>
-                    <a href="" class="text-pink">Đã hủy <span class="text-muted">(5)</span></a>
+                    <a href="" class="text-pink">Đang xử lý <span class="text-muted">({{ $num_processing }})</span></a>
+                    <a href="" class="text-pink">Đang giao <span class="text-muted">({{ $num_shipping }})</span></a>
+                    <a href="" class="text-pink">Hoàn thành <span class="text-muted">({{ $num_completed }})</span></a>
+                    <a href="" class="text-pink">Đã hủy <span class="text-muted">({{ $num_cancelled }})</span></a>
                 </div>
 
                 {{-- Bulk action --}}

@@ -17,7 +17,17 @@ class AdminOrderController extends Controller
                 ->orWhere('phone', 'like', '%' . $request->keyword . '%');
         }
         $orders = $orders->paginate(10);
-        return view('admin.order.show', compact('orders'));
+        $num_processing = Order::where('status', Order::STATUS_PROCESSING)->count();
+        $num_shipping = Order::where('status', Order::STATUS_SHIPPING)->count();
+        $num_completed = Order::where('status', Order::STATUS_COMPLETED)->count();
+        $num_cancelled = Order::where('status', Order::STATUS_CANCELLED)->count();
+        return view('admin.order.show', compact([
+            'orders',
+            'num_processing',
+            'num_shipping',
+            'num_completed',
+            'num_cancelled'
+        ]));
     }
 
     public function edit($id)
