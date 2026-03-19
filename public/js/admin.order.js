@@ -1,21 +1,21 @@
-var deleteModal = document.getElementById('deletePageModal');
+var deleteModal = document.getElementById('deleteOrderModal');
 if (deleteModal) {
     deleteModal.addEventListener('show.bs.modal', function (event) {
         var button = event.relatedTarget;
         if (!button) return;
 
         var id = button.getAttribute('data-bs-id');
-        var title = button.getAttribute('data-title');
+        var code = button.getAttribute('data-bs-code');
 
-        var modalTitle = deleteModal.querySelector('#delete-title');
+        var modalCode = deleteModal.querySelector('#delete-code');
         var deleteForm = deleteModal.querySelector('#deleteForm');
 
-        if (modalTitle) {
-            modalTitle.textContent = title || '';
+        if (modalCode) {
+            modalCode.textContent = code || '';
         }
 
         if (deleteForm) {
-            deleteForm.action = '/admin/page/delete/' + id;
+            deleteForm.action = '/admin/order/delete/' + id;
         }
     });
 }

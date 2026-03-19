@@ -137,8 +137,10 @@
                                             <a href="{{ route('admin.order.edit', $order->id) }}" class="btn btn-success btn-sm text-white" title="Edit">
                                                 <i class="fa fa-edit"></i>
                                             </a>
-                                            <a href="#" class="btn btn-danger btn-sm text-white" title="Delete">
-                                                <i class="fa fa-trash"></i>
+                                            <button type="button" class="btn btn-danger btn-sm rounded-2 text-white"
+                                            data-toggle="tooltip" data-placement="top" title="Delete" data-bs-toggle="modal"
+                                            data-bs-target="#deleteOrderModal" data-bs-id="{{ $order->id }}"
+                                            data-bs-code="{{ $order->code }}"><i class="fa fa-trash"></i></button>
                                             </a>
                                         </div>
                                     </td>
@@ -224,5 +226,7 @@
                 {{ $orders->appends(request()->query())->links() }}
             </div>
         </div>
+        @include('admin.order.delete')
+        <script src="{{ asset('js/admin.order.js') }}"></script>
     </div>
 @endsection

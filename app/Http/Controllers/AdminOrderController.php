@@ -28,7 +28,7 @@ class AdminOrderController extends Controller
 
     public function update(Request $request, $id)
     {
-        $order = Order::findOrFail($id);
+        $order = Order::find($id);
 
         $order->update([
             'status' => $request->status,
@@ -37,5 +37,13 @@ class AdminOrderController extends Controller
 
         return redirect()->route('admin.order')
             ->with('success', 'Cập nhật đơn hàng thành công');
+    }
+
+    public function destroy($id)
+    {
+        $page = Order::find($id);
+        $page->delete();
+
+        return redirect('admin/order')->with('success', 'Xóa đơn hàng thành công.');
     }
 }
