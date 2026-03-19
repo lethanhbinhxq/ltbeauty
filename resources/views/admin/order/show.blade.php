@@ -13,9 +13,10 @@
                         <h5 class="m-0 fw-bold">Danh sách đơn hàng</h5>
                     </div>
 
-                    <form class="d-flex" role="search">
+                    <form class="d-flex" role="search" method="GET" action="">
                         <div class="input-group">
-                            <input class="form-control" type="search" placeholder="Tìm kiếm...">
+                            <input class="form-control" type="search" placeholder="Tìm kiếm..."  name="keyword"
+                            value="{{ request('keyword') }}">
                             <button class="btn btn-primary" type="submit">
                                 <i class="fa-solid fa-magnifying-glass me-1"></i>
                             </button>
@@ -220,7 +221,7 @@
                 </div>
 
                 {{-- Pagination --}}
-                {{ $orders->links() }}
+                {{ $orders->appends(request()->query())->links() }}
             </div>
         </div>
     </div>
