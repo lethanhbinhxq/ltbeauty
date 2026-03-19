@@ -134,7 +134,7 @@
                                     </td>
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center gap-1">
-                                            <a href="#" class="btn btn-success btn-sm text-white" title="Edit">
+                                            <a href="{{ route('admin.order.edit', $order->id) }}" class="btn btn-success btn-sm text-white" title="Edit">
                                                 <i class="fa fa-edit"></i>
                                             </a>
                                             <a href="#" class="btn btn-danger btn-sm text-white" title="Delete">

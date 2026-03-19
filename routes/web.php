@@ -26,6 +26,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/admin', [AdminDashboardController::class, 'dashboard'])->name('admin');
 
     Route::get('admin/order', [AdminOrderController::class, 'show'])->name('admin.order');
+    Route::get('admin/order/edit/{id}', [AdminOrderController::class, 'edit'])->name('admin.order.edit');
+    Route::put('/admin/order/update/{id}', [AdminOrderController::class, 'update'])->name('admin.order.update');
 
     Route::get('admin/page', [AdminPageController::class, 'show'])->name('admin.page');
     Route::get('admin/page/add', [AdminPageController::class, 'add'])->name('admin.page.add');
