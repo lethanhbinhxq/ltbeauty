@@ -16,6 +16,7 @@
             </div>
             <div class="card-body">
                 <div class="analytic">
+                    <a href="" class="text-pink">Còn hàng <span class="text-muted">({{ $num_in_stock }})</span></a>
                     <a href="" class="text-pink">Hết hàng <span class="text-muted">({{ $num_out_of_stock }})</span></a>
                 </div>
                 <div class="d-flex align-items-center py-3 gap-2">
@@ -33,7 +34,7 @@
                     <thead>
                         <tr>
                             <th scope="col">
-                                <input name="checkall" type="checkbox">
+                                <input name="checkall" type="checkbox" class="form-check-input">
                             </th>
                             <th scope="col">#</th>
                             <th scope="col">Ảnh</th>
@@ -55,7 +56,7 @@
                                     $t++;
                                 @endphp
                                 <td>
-                                    <input type="checkbox">
+                                    <input type="checkbox" class="form-check-input">
                                 </td>
                                 <td>{{ $t }}</td>
                                 <td><img src="{{ asset($product->thumbnail) }}" alt="" width="80"></td>

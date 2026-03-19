@@ -40,7 +40,7 @@
                         <thead>
                             <tr>
                                 <th>
-                                    <input type="checkbox" name="checkall">
+                                    <input type="checkbox" class="form-check-input" name="checkall">
                                 </th>
                                 <th scope="col">#</th>
                                 <th scope="col">Họ tên</th>
@@ -59,7 +59,7 @@
                                     @endphp
                                     <tr>
                                         <td>
-                                            <input type="checkbox">
+                                            <input type="checkbox" class="form-check-input">
                                         </td>
                                         <th scope="row">{{$t}}</th>
                                         <td>{{$user->name}}</td>

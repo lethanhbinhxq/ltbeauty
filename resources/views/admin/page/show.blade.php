@@ -36,7 +36,7 @@
                         <thead>
                             <tr>
                                 <th scope="col">
-                                    <input name="checkall" type="checkbox">
+                                    <input name="checkall" type="checkbox" class="form-check-input">
                                 </th>
                                 <th scope="col">#</th>
                                 <th scope="col">Tiêu đề</th>
@@ -53,7 +53,7 @@
                                 @endphp
                                 <tr>
                                     <td>
-                                        <input type="checkbox">
+                                        <input type="checkbox" class="form-check-input">
                                     </td>
                                     <td scope="row">{{ $t }}</td>
                                     <td><a href="">{{ $page->title }}</a></td>

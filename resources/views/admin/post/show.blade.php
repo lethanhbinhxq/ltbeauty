@@ -33,7 +33,7 @@
                     <thead>
                         <tr>
                             <th scope="col">
-                                <input name="checkall" type="checkbox">
+                                <input name="checkall" type="checkbox" class="form-check-input">
                             </th>
                             <th scope="col">#</th>
                             <th scope="col">Ảnh</th>
@@ -54,7 +54,7 @@
                             @endphp
                             <tr>
                                 <td>
-                                    <input type="checkbox">
+                                    <input type="checkbox" class="form-check-input">
                                 </td>
                                 <td scope="row">{{ $t }}</td>
                                 <td><img src="{{ asset($post->thumbnail) }}" alt="" width="80"></td>
