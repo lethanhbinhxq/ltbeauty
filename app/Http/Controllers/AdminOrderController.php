@@ -10,7 +10,7 @@ class AdminOrderController extends Controller
 {
     //
     public function show() {
-        $orders = Order::all();
+        $orders = Order::paginate(10);
         return view('admin.order.show', compact('orders'));
     }
 }
