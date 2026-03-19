@@ -1,5 +1,9 @@
 @extends('layouts.admin')
 
+@php
+    use App\Models\Order;
+@endphp
+
 @section('content')
     <div id="content" class="container-fluid py-3">
         <div class="card border-0 shadow-sm">
@@ -11,8 +15,7 @@
 
                     <form class="d-flex" role="search">
                         <div class="input-group">
-                            <input class="form-control" type="search"
-                                placeholder="Tìm kiếm...">
+                            <input class="form-control" type="search" placeholder="Tìm kiếm...">
                             <button class="btn btn-primary" type="submit">
                                 <i class="fa-solid fa-magnifying-glass me-1"></i>
                             </button>
@@ -66,363 +69,152 @@
                         </thead>
                         <tbody>
                             {{-- ORDER 1 --}}
-                            <tr class="border-top">
-                                <td>
-                                    <input type="checkbox" class="form-check-input">
-                                </td>
-                                <td>
-                                    <div class="fw-bold">#DH1212</div>
-                                    <small class="text-muted">3 sản phẩm</small>
-                                </td>
-                                <td>
-                                    <div class="fw-semibold">Phan Văn Cương</div>
-                                    <div class="text-muted small">0988859692</div>
-                                    <div class="text-muted small">phanvancuong@gmail.com</div>
-                                </td>
-                                <td>
-                                    <div class="fw-semibold">Samsung Galaxy A51</div>
-                                    <small class="text-muted">và 2 sản phẩm khác</small>
-                                </td>
-                                <td>
-                                    <div class="fw-bold text-danger">15.580.000₫</div>
-                                </td>
-                                <td>
-                                    <span class="badge bg-info-subtle text-info border">COD</span>
-                                </td>
-                                <td>
-                                    <span class="badge bg-warning text-dark">Đang xử lý</span>
-                                </td>
-                                <td>
-                                    <div>26/06/2020 14:00</div>
-                                </td>
-                                <td class="text-center">
-                                    <button class="btn btn-sm btn-outline-secondary" type="button"
-                                        data-bs-toggle="collapse" data-bs-target="#orderDetail1212" aria-expanded="false">
-                                        <i class="fa-solid fa-chevron-down"></i>
-                                    </button>
-                                </td>
-                                <td class="text-center">
-                                    <div class="d-flex justify-content-center gap-1">
-                                        <a href="#" class="btn btn-success btn-sm text-white" title="Edit">
-                                            <i class="fa fa-edit"></i>
-                                        </a>
-                                        <a href="#" class="btn btn-danger btn-sm text-white" title="Delete">
-                                            <i class="fa fa-trash"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="collapse bg-light" id="orderDetail1212">
-                                <td colspan="10">
-                                    <div class="p-3">
-                                        <div class="row g-4">
-                                            <div class="col-12 col-lg-8">
-                                                <h6 class="fw-bold mb-3">Danh sách sản phẩm</h6>
-                                                <div class="table-responsive">
-                                                    <table class="table table-sm align-middle mb-0">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Sản phẩm</th>
-                                                                <th width="120">Đơn giá</th>
-                                                                <th width="100">Số lượng</th>
-                                                                <th width="140">Thành tiền</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>Samsung Galaxy A51 (8GB/128GB)</td>
-                                                                <td>7.790.000₫</td>
-                                                                <td>1</td>
-                                                                <td class="fw-semibold">7.790.000₫</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Tai nghe Bluetooth Samsung</td>
-                                                                <td>1.500.000₫</td>
-                                                                <td>1</td>
-                                                                <td class="fw-semibold">1.500.000₫</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Ốp lưng Galaxy A51</td>
-                                                                <td>290.000₫</td>
-                                                                <td>2</td>
-                                                                <td class="fw-semibold">580.000₫</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
+                            @foreach ($orders as $order)
+                                <tr class="border-top">
+                                    <td>
+                                        <input type="checkbox" class="form-check-input">
+                                    </td>
+                                    <td>
+                                        <div class="fw-bold">{{ $order->code }}</div>
+                                        <small class="text-muted">3 sản phẩm</small>
+                                    </td>
+                                    <td>
+                                        <div class="fw-semibold">{{ $order->customer_name }}</div>
+                                        <div class="text-muted small">{{ $order->phone }}</div>
+                                        <div class="text-muted small">{{ $order->email }}</div>
+                                    </td>
+                                    <td>
+                                        <div class="fw-semibold">{{ $order->items->first()->product->name }}</div>
+                                        <small class="text-muted">và {{ $order->items->count() - 1 }} sản phẩm khác</small>
+                                    </td>
+                                    <td>
+                                        <div class="fw-bold text-danger">{{ number_format($order->total, 0, '', '.') }}đ</div>
+                                    </td>
+
+                                    <td>
+                                        {{-- Payment method --}}
+                                        @if ($order->payment_method === Order::PAYMENT_COD)
+                                            <span class="badge bg-info-subtle text-info border">COD</span>
+                                        @elseif ($order->payment_method === Order::PAYMENT_BANK)
+                                            <span class="badge bg-success-subtle text-success border">Chuyển khoản</span>
+                                        @endif
+
+                                        {{-- Payment status --}}
+                                        <div class="small mt-1">
+                                            @if ($order->payment_status === Order::PAYMENT_PAID)
+                                                <span class="text-success">Đã thanh toán</span>
+                                            @elseif ($order->payment_status === Order::PAYMENT_UNPAID)
+                                                <span class="text-warning">Chưa thanh toán</span>
+                                            @elseif ($order->payment_status === Order::PAYMENT_REFUNDED)
+                                                <span class="text-danger">Đã hoàn tiền</span>
+                                            @endif
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        @if ($order->status === Order::STATUS_PROCESSING)
+                                            <span class="badge bg-warning text-dark">Đang xử lý</span>
+                                        @elseif ($order->status === Order::STATUS_SHIPPING)
+                                            <span class="badge bg-primary">Đang giao</span>
+                                        @elseif ($order->status === Order::STATUS_COMPLETED)
+                                            <span class="badge bg-success">Hoàn thành</span>
+                                        @elseif ($order->status === Order::STATUS_CANCELLED)
+                                            <span class="badge bg-danger">Đã hủy</span>
+                                        @endif
+                                    </td>
+
+                                    <td>{{ $order->created_at->timezone('Asia/Ho_Chi_Minh')->format('d/m/Y H:i:s') }}</td>
+
+                                    <td class="text-center">
+                                        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#{{$order->id}}" aria-expanded="false">
+                                            <i class="fa-solid fa-chevron-down"></i>
+                                        </button>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="d-flex justify-content-center gap-1">
+                                            <a href="#" class="btn btn-success btn-sm text-white" title="Edit">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                            <a href="#" class="btn btn-danger btn-sm text-white" title="Delete">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="collapse bg-light" id="{{ $order->id }}">
+                                    <td colspan="10">
+                                        <div class="p-3">
+                                            <div class="row g-4">
+                                                <div class="col-12 col-lg-8">
+                                                    <h6 class="fw-bold mb-3">Danh sách sản phẩm</h6>
+                                                    <div class="table-responsive">
+                                                        <table class="table table-sm align-middle mb-0">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Sản phẩm</th>
+                                                                    <th width="120">Đơn giá</th>
+                                                                    <th width="100">Số lượng</th>
+                                                                    <th width="140">Thành tiền</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach ($order->items as $item)
+                                                                    <tr>
+                                                                        <td>{{ $item->product->name }}</td>
+                                                                        <td>{{ number_format($item->product_price, 0, '', '.') }}đ
+                                                                        </td>
+                                                                        <td>{{ $item->qty }}</td>
+                                                                        <td class="fw-semibold">
+                                                                            {{ number_format($item->total, 0, '', '.') }}đ</td>
+                                                                    </tr>
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12 col-lg-4">
+                                                    <h6 class="fw-bold mb-3">Thông tin đơn hàng</h6>
+                                                    <ul class="list-group list-group-flush border rounded">
+                                                        <li class="list-group-item d-flex justify-content-between">
+                                                            <span>Tạm tính</span>
+                                                            <strong>{{ number_format($order->subtotal, 0, '', '.') }}đ</strong>
+                                                        </li>
+                                                        <li class="list-group-item d-flex justify-content-between">
+                                                            <span>Phí vận chuyển</span>
+                                                            <strong>{{ number_format($order->shipping_fee, 0, '', '.') }}đ</strong>
+                                                        </li>
+                                                        <li class="list-group-item d-flex justify-content-between">
+                                                            <span>Giảm giá</span>
+                                                            <strong>-{{ number_format($order->discount, 0, '', '.') }}đ</strong>
+                                                        </li>
+                                                        <li class="list-group-item d-flex justify-content-between">
+                                                            <span>Tổng cộng</span>
+                                                            <strong
+                                                                class="text-danger">{{ number_format($order->total, 0, '', '.') }}đ</strong>
+                                                        </li>
+                                                        <li class="list-group-item">
+                                                            <div class="fw-semibold mb-1">Địa chỉ giao hàng</div>
+                                                            <div class="text-muted small">
+                                                                {{ $order->address }}
+                                                            </div>
+                                                        </li>
+                                                        @if ($order->note)
+                                                            <li class="list-group-item">
+                                                                <div class="fw-semibold mb-1">Ghi chú</div>
+                                                                <div class="text-muted small">
+                                                                    {{ $order->note }}
+                                                                </div>
+                                                            </li>
+                                                        @endif
+                                                    </ul>
                                                 </div>
                                             </div>
-
-                                            <div class="col-12 col-lg-4">
-                                                <h6 class="fw-bold mb-3">Thông tin đơn hàng</h6>
-                                                <ul class="list-group list-group-flush border rounded">
-                                                    <li class="list-group-item d-flex justify-content-between">
-                                                        <span>Tạm tính</span>
-                                                        <strong>9.870.000₫</strong>
-                                                    </li>
-                                                    <li class="list-group-item d-flex justify-content-between">
-                                                        <span>Phí vận chuyển</span>
-                                                        <strong>30.000₫</strong>
-                                                    </li>
-                                                    <li class="list-group-item d-flex justify-content-between">
-                                                        <span>Giảm giá</span>
-                                                        <strong>-0₫</strong>
-                                                    </li>
-                                                    <li class="list-group-item d-flex justify-content-between">
-                                                        <span>Tổng cộng</span>
-                                                        <strong class="text-danger">9.900.000₫</strong>
-                                                    </li>
-                                                    <li class="list-group-item">
-                                                        <div class="fw-semibold mb-1">Địa chỉ giao hàng</div>
-                                                        <div class="text-muted small">
-                                                            12 Nguyễn Trãi, Quận 5, TP.HCM
-                                                        </div>
-                                                    </li>
-                                                    <li class="list-group-item">
-                                                        <div class="fw-semibold mb-1">Ghi chú</div>
-                                                        <div class="text-muted small">
-                                                            Giao giờ hành chính, gọi trước khi giao.
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            {{-- ORDER 2 --}}
-                            <tr class="border-top">
-                                <td>
-                                    <input type="checkbox" class="form-check-input">
-                                </td>
-                                <td>
-                                    <div class="fw-bold">#DH1213</div>
-                                    <small class="text-muted">2 sản phẩm</small>
-                                </td>
-                                <td>
-                                    <div class="fw-semibold">Minh Anh</div>
-                                    <div class="text-muted small">0868873382</div>
-                                    <div class="text-muted small">minhanh@gmail.com</div>
-                                </td>
-                                <td>
-                                    <div class="fw-semibold">Samsung Galaxy A51</div>
-                                    <small class="text-muted">và 1 sản phẩm khác</small>
-                                </td>
-                                <td>
-                                    <div class="fw-bold text-danger">8.290.000₫</div>
-                                </td>
-                                <td>
-                                    <span class="badge bg-success-subtle text-success border">Đã thanh toán</span>
-                                </td>
-                                <td>
-                                    <span class="badge bg-success">Hoàn thành</span>
-                                </td>
-                                <td>
-                                    <div>26/06/2020 14:00</div>
-                                </td>
-                                <td class="text-center">
-                                    <button class="btn btn-sm btn-outline-secondary" type="button"
-                                        data-bs-toggle="collapse" data-bs-target="#orderDetail1213" aria-expanded="false">
-                                        <i class="fa-solid fa-chevron-down"></i>
-                                    </button>
-                                </td>
-                                <td class="text-center">
-                                    <div class="d-flex justify-content-center gap-1">
-                                        <a href="#" class="btn btn-success btn-sm text-white" title="Edit">
-                                            <i class="fa fa-edit"></i>
-                                        </a>
-                                        <a href="#" class="btn btn-danger btn-sm text-white" title="Delete">
-                                            <i class="fa fa-trash"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="collapse bg-light" id="orderDetail1213">
-                                <td colspan="10">
-                                    <div class="p-3">
-                                        <div class="row g-4">
-                                            <div class="col-12 col-lg-8">
-                                                <h6 class="fw-bold mb-3">Danh sách sản phẩm</h6>
-                                                <div class="table-responsive">
-                                                    <table class="table table-sm align-middle mb-0">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Sản phẩm</th>
-                                                                <th width="120">Đơn giá</th>
-                                                                <th width="100">Số lượng</th>
-                                                                <th width="140">Thành tiền</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>Samsung Galaxy A51 (8GB/128GB)</td>
-                                                                <td>7.790.000₫</td>
-                                                                <td>1</td>
-                                                                <td class="fw-semibold">7.790.000₫</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Dán cường lực Galaxy A51</td>
-                                                                <td>500.000₫</td>
-                                                                <td>1</td>
-                                                                <td class="fw-semibold">500.000₫</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-12 col-lg-4">
-                                                <h6 class="fw-bold mb-3">Thông tin đơn hàng</h6>
-                                                <ul class="list-group list-group-flush border rounded">
-                                                    <li class="list-group-item d-flex justify-content-between">
-                                                        <span>Tạm tính</span>
-                                                        <strong>8.290.000₫</strong>
-                                                    </li>
-                                                    <li class="list-group-item d-flex justify-content-between">
-                                                        <span>Phí vận chuyển</span>
-                                                        <strong>0₫</strong>
-                                                    </li>
-                                                    <li class="list-group-item d-flex justify-content-between">
-                                                        <span>Tổng cộng</span>
-                                                        <strong class="text-danger">8.290.000₫</strong>
-                                                    </li>
-                                                    <li class="list-group-item">
-                                                        <div class="fw-semibold mb-1">Địa chỉ giao hàng</div>
-                                                        <div class="text-muted small">
-                                                            45 Lê Lợi, Quận 1, TP.HCM
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            {{-- ORDER 3 --}}
-                            <tr class="border-top">
-                                <td>
-                                    <input type="checkbox" class="form-check-input">
-                                </td>
-                                <td>
-                                    <div class="fw-bold">#DH1214</div>
-                                    <small class="text-muted">4 sản phẩm</small>
-                                </td>
-                                <td>
-                                    <div class="fw-semibold">Trần Thu Hằng</div>
-                                    <div class="text-muted small">0234343545</div>
-                                    <div class="text-muted small">thuhang@gmail.com</div>
-                                </td>
-                                <td>
-                                    <div class="fw-semibold">iPhone 11 Pro Max 64GB</div>
-                                    <small class="text-muted">và 3 sản phẩm khác</small>
-                                </td>
-                                <td>
-                                    <div class="fw-bold text-danger">31.490.000₫</div>
-                                </td>
-                                <td>
-                                    <span class="badge bg-success-subtle text-success border">Đã thanh toán</span>
-                                </td>
-                                <td>
-                                    <span class="badge bg-success">Hoàn thành</span>
-                                </td>
-                                <td>
-                                    <div>26/06/2020 14:00</div>
-                                </td>
-                                <td class="text-center">
-                                    <button class="btn btn-sm btn-outline-secondary" type="button"
-                                        data-bs-toggle="collapse" data-bs-target="#orderDetail1214" aria-expanded="false">
-                                        <i class="fa-solid fa-chevron-down"></i>
-                                    </button>
-                                </td>
-                                <td class="text-center">
-                                    <div class="d-flex justify-content-center gap-1">
-                                        <a href="#" class="btn btn-success btn-sm text-white" title="Edit">
-                                            <i class="fa fa-edit"></i>
-                                        </a>
-                                        <a href="#" class="btn btn-danger btn-sm text-white" title="Delete">
-                                            <i class="fa fa-trash"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="collapse bg-light" id="orderDetail1214">
-                                <td colspan="10">
-                                    <div class="p-3">
-                                        <div class="row g-4">
-                                            <div class="col-12 col-lg-8">
-                                                <h6 class="fw-bold mb-3">Danh sách sản phẩm</h6>
-                                                <div class="table-responsive">
-                                                    <table class="table table-sm align-middle mb-0">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Sản phẩm</th>
-                                                                <th width="120">Đơn giá</th>
-                                                                <th width="100">Số lượng</th>
-                                                                <th width="140">Thành tiền</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>Điện thoại iPhone 11 Pro Max 64GB</td>
-                                                                <td>29.490.000₫</td>
-                                                                <td>1</td>
-                                                                <td class="fw-semibold">29.490.000₫</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>AirPods 2</td>
-                                                                <td>3.500.000₫</td>
-                                                                <td>1</td>
-                                                                <td class="fw-semibold">3.500.000₫</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Ốp lưng iPhone</td>
-                                                                <td>300.000₫</td>
-                                                                <td>1</td>
-                                                                <td class="fw-semibold">300.000₫</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Sạc nhanh 20W</td>
-                                                                <td>700.000₫</td>
-                                                                <td>1</td>
-                                                                <td class="fw-semibold">700.000₫</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-12 col-lg-4">
-                                                <h6 class="fw-bold mb-3">Thông tin đơn hàng</h6>
-                                                <ul class="list-group list-group-flush border rounded">
-                                                    <li class="list-group-item d-flex justify-content-between">
-                                                        <span>Tạm tính</span>
-                                                        <strong>33.990.000₫</strong>
-                                                    </li>
-                                                    <li class="list-group-item d-flex justify-content-between">
-                                                        <span>Phí vận chuyển</span>
-                                                        <strong>30.000₫</strong>
-                                                    </li>
-                                                    <li class="list-group-item d-flex justify-content-between">
-                                                        <span>Giảm giá</span>
-                                                        <strong>-2.530.000₫</strong>
-                                                    </li>
-                                                    <li class="list-group-item d-flex justify-content-between">
-                                                        <span>Tổng cộng</span>
-                                                        <strong class="text-danger">31.490.000₫</strong>
-                                                    </li>
-                                                    <li class="list-group-item">
-                                                        <div class="fw-semibold mb-1">Địa chỉ giao hàng</div>
-                                                        <div class="text-muted small">
-                                                            88 Điện Biên Phủ, Bình Thạnh, TP.HCM
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
