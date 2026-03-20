@@ -14,8 +14,9 @@
             </div>
             <div class="card-body">
                 <div class="analytic">
-                    <a href="" class="text-pink">Công khai <span class="text-muted">({{ $num_public }})</span></a>
-                    <a href="" class="text-pink">Chờ duyệt <span class="text-muted">({{ $num_pending }})</span></a>
+                    <a href="?status=all" class="text-pink">Tất cả <span class="text-muted">({{ $num_all }})</span></a>
+                    <a href="?status=public" class="text-pink">Công khai <span class="text-muted">({{ $num_public }})</span></a>
+                    <a href="?status=pending" class="text-pink">Chờ duyệt <span class="text-muted">({{ $num_pending }})</span></a>
                 </div>
                 <div class="d-flex align-items-center py-3 gap-2">
                     <select class="form-select w-auto">

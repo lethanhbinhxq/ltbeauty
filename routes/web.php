@@ -36,6 +36,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('admin/page/edit/{id}', [AdminPageController::class, 'edit'])->name('admin.page.edit');
     Route::post('admin/page/update/{id}', [AdminPageController::class, 'update']);
     Route::delete('admin/page/delete/{id}', [AdminPageController::class, 'destroy']);
+    Route::delete('admin/page/action', [AdminPageController::class, 'action']);
 
     Route::get('admin/role/permission', [AdminRoleController::class, 'permission']);
     Route::get('admin/role', [AdminRoleController::class, 'showRole']);

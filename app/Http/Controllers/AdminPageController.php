@@ -16,13 +16,20 @@ class AdminPageController extends Controller
 
     public function show(Request $request)
     {
-        if ($request) {
+        if ($request->status && $request->status != 'all') {
+            if ($request->status == 'public') {
+                $pages = Page::where('status', 'public');
+            } else {
+                $pages = Page::where('status', 'pending');
+            }
+        } else {
             $pages = Page::where('title', 'like', '%' . $request->keyword . '%');
         }
         $pages = $pages->paginate(10);
+        $num_all = Page::count();
         $num_public = Page::where('status', Page::STATUS_PUBLIC)->count();
         $num_pending = Page::where('status', Page::STATUS_PENDING)->count();
-        return view("admin.page.show", compact('pages', 'num_public', 'num_pending'));
+        return view("admin.page.show", compact('pages', 'num_public', 'num_pending', 'num_all'));
     }
 
     public function insert(Request $request)
@@ -99,5 +106,10 @@ class AdminPageController extends Controller
         $page->delete();
 
         return redirect('admin/page')->with('success', 'Xóa người dùng thành công.');
+    }
+
+    public function action(Request $request)
+    {
+        dd($request);
     }
 }
