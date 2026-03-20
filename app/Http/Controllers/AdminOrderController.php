@@ -16,7 +16,7 @@ class AdminOrderController extends Controller
                 ->orWhere('customer_name', 'like', '%' . $request->keyword . '%')
                 ->orWhere('phone', 'like', '%' . $request->keyword . '%');
         }
-        $orders = $orders->paginate(10);
+        $orders = $orders->orderBy('created_at', 'desc')->paginate(10);
         $num_processing = Order::where('status', Order::STATUS_PROCESSING)->count();
         $num_shipping = Order::where('status', Order::STATUS_SHIPPING)->count();
         $num_completed = Order::where('status', Order::STATUS_COMPLETED)->count();
