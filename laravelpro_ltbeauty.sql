@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 19, 2026 at 03:23 AM
+-- Generation Time: Mar 21, 2026 at 04:49 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -130,7 +130,73 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (10, '2026_03_17_085116_create_posts_table', 4),
 (11, '2026_03_17_143013_add_detail_slug_to_posts_table', 5),
 (12, '2026_03_18_082505_create_product_cats_table', 6),
-(16, '2026_03_18_090756_create_products_table', 7);
+(16, '2026_03_18_090756_create_products_table', 7),
+(18, '2026_03_19_092922_create_orders_table', 8),
+(19, '2026_03_19_093847_create_order_items_table', 8),
+(20, '2026_03_19_104342_add_product_price_to_order_items', 9);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `orders`
+--
+
+CREATE TABLE `orders` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `code` varchar(255) NOT NULL,
+  `customer_name` varchar(255) NOT NULL,
+  `phone` varchar(12) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `address` text NOT NULL,
+  `note` text DEFAULT NULL,
+  `subtotal` bigint(20) UNSIGNED NOT NULL DEFAULT 0,
+  `shipping_fee` bigint(20) UNSIGNED NOT NULL DEFAULT 0,
+  `discount` bigint(20) UNSIGNED NOT NULL DEFAULT 0,
+  `total` bigint(20) UNSIGNED NOT NULL DEFAULT 0,
+  `payment_method` enum('cod','bank_transfer') NOT NULL DEFAULT 'cod',
+  `payment_status` enum('unpaid','paid','refunded') NOT NULL DEFAULT 'unpaid',
+  `status` enum('processing','shipping','completed','cancelled') NOT NULL DEFAULT 'processing',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `code`, `customer_name`, `phone`, `email`, `address`, `note`, `subtotal`, `shipping_fee`, `discount`, `total`, `payment_method`, `payment_status`, `status`, `created_at`, `updated_at`) VALUES
+(1, '#DH1212', 'Phan Văn Cương', '0988859692', 'phanvancuong@gmail.com', '12 Nguyễn Trãi, Quận 5, TP.HCM', 'Giao giờ hành chính, gọi trước khi giao.', 9390000, 30000, 0, 9420000, 'cod', 'unpaid', 'processing', '2026-03-19 04:10:49', '2026-03-19 06:09:06'),
+(3, '#DH1214', 'Trần Thu Hằng', '0234343545', 'thuhang@gmail.com', '88 Điện Biên Phủ, Bình Thạnh, TP.HCM', NULL, 33810000, 30000, 2530000, 31310000, 'cod', 'paid', 'completed', '2026-03-19 04:11:14', '2026-03-19 04:11:19');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order_items`
+--
+
+CREATE TABLE `order_items` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `order_id` bigint(20) UNSIGNED NOT NULL,
+  `product_id` bigint(20) UNSIGNED NOT NULL,
+  `qty` int(10) UNSIGNED NOT NULL DEFAULT 1,
+  `total` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `product_price` bigint(20) UNSIGNED NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `order_items`
+--
+
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `qty`, `total`, `created_at`, `updated_at`, `product_price`) VALUES
+(1, 1, 5, 1, 7790000, NULL, NULL, 7790000),
+(2, 1, 6, 1, 1500000, NULL, NULL, 1500000),
+(3, 1, 7, 2, 100000, NULL, NULL, 50000),
+(6, 3, 9, 1, 29490000, NULL, NULL, 29490000),
+(7, 3, 10, 1, 3500000, NULL, NULL, 3500000),
+(8, 3, 11, 1, 120000, NULL, NULL, 120000),
+(9, 3, 12, 1, 700000, NULL, NULL, 700000);
 
 -- --------------------------------------------------------
 
@@ -247,7 +313,15 @@ CREATE TABLE `products` (
 
 INSERT INTO `products` (`id`, `name`, `slug`, `description`, `price`, `thumbnail`, `detail`, `cat_id`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'Quần tây', 'quan-tay', 'What is Lorem Ipsum?\r\nLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.\r\n\r\nWhy do we use it?\r\nIt is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lorem ipsum\' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).', 300000, 'uploads/products/1709274021-screenshot_1709267836.png', '<div>\r\n<h2>What is Lorem Ipsum?</h2>\r\n<p><strong>Lorem Ipsum</strong>&nbsp;is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>\r\n</div>\r\n<div>\r\n<h2>Why do we use it?</h2>\r\n<p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lorem ipsum\' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>\r\n</div>', 1, 'in_stock', '2026-03-18 02:51:53', '2026-03-18 03:25:03'),
-(2, 'Áo sơ mi', 'ao-so-mi', 'ajsakjasd jasndkads', 329000, 'uploads/products/sunrise-blue-sky-panorama-early-morning-dawn-5k-3840x2160-3644.jpg', '<p>asdmadsda asdmadads asdkkqewlew welfwfosfo</p>', 2, 'out_of_stock', '2026-03-18 03:03:50', '2026-03-18 03:03:50');
+(2, 'Áo sơ mi', 'ao-so-mi', 'ajsakjasd jasndkads', 329000, 'uploads/products/sunrise-blue-sky-panorama-early-morning-dawn-5k-3840x2160-3644.jpg', '<p>asdmadsda asdmadads asdkkqewlew welfwfosfo</p>', 2, 'out_of_stock', '2026-03-18 03:03:50', '2026-03-18 03:03:50'),
+(5, 'Samsung Galaxy A51 (8GB/128GB)', 'samsung-galaxy-a51-8gb128gb', 'Lorem ipsum', 7790000, 'uploads/products/', '<p>Lorem ipsum</p>', 5, 'in_stock', '2026-03-19 02:54:50', '2026-03-19 02:54:50'),
+(6, 'Tai nghe Bluetooth Samsung', 'tai-nghe-bluetooth-samsung', 'Lorem ipsum', 1500000, 'uploads/products/', '<p>Lorem ipsum</p>', 6, 'in_stock', '2026-03-19 02:55:36', '2026-03-19 02:55:36'),
+(7, 'Ốp lưng Galaxy A51', 'op-lung-galaxy-a51', 'Lorem ipsum', 50000, 'uploads/products/', '<p>Lorem ipsum</p>', 7, 'in_stock', '2026-03-19 02:56:28', '2026-03-19 02:56:28'),
+(8, 'Dán cường lực Galaxy A51', 'dan-cuong-luc-galaxy-a51', 'lorem ipsum', 500000, 'uploads/products/', '<p>Lorem ipsum</p>', 7, 'in_stock', '2026-03-19 02:57:17', '2026-03-19 02:57:17'),
+(9, 'Điện thoại iPhone 11 Pro Max 64GB', 'dien-thoai-iphone-11-pro-max-64gb', 'Lorem ipsum', 29490000, 'uploads/products/', '<p>Lorem ipsum</p>', 5, 'in_stock', '2026-03-19 02:58:00', '2026-03-19 02:58:00'),
+(10, 'Airpod 2', 'airpod-2', 'Lorem ipsum', 3500000, 'uploads/products/', '<p>Lorem ipsum</p>', 6, 'in_stock', '2026-03-19 02:58:37', '2026-03-19 02:58:37'),
+(11, 'Ốp lưng iphone', 'op-lung-iphone', 'Lorem ipsum', 120000, 'uploads/products/', '<p>Lorem ipsum</p>', 7, 'in_stock', '2026-03-19 02:59:13', '2026-03-19 02:59:13'),
+(12, 'Sạc nhanh 20W', 'sac-nhanh-20w', 'Lorem ipsum', 700000, 'uploads/products/', '<p>Lorem ipsum</p>', 7, 'in_stock', '2026-03-19 02:59:52', '2026-03-19 02:59:52');
 
 -- --------------------------------------------------------
 
@@ -270,7 +344,11 @@ CREATE TABLE `product_cats` (
 
 INSERT INTO `product_cats` (`id`, `name`, `parent_id`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'Quần', NULL, 'public', '2026-03-18 01:34:18', '2026-03-18 01:42:16'),
-(2, 'Áo', NULL, 'public', '2026-03-18 01:37:44', '2026-03-18 01:37:44');
+(2, 'Áo', NULL, 'public', '2026-03-18 01:37:44', '2026-03-18 01:37:44'),
+(4, 'Quần dài', 1, 'public', '2026-03-19 02:50:41', '2026-03-19 02:50:41'),
+(5, 'Điện thoại', NULL, 'public', '2026-03-19 02:51:07', '2026-03-19 02:51:07'),
+(6, 'Tai nghe', NULL, 'public', '2026-03-19 02:51:19', '2026-03-19 02:51:19'),
+(7, 'Phụ kiện', NULL, 'public', '2026-03-19 02:51:37', '2026-03-19 02:52:02');
 
 -- --------------------------------------------------------
 
@@ -292,7 +370,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('qoTPpVgVbTqr6EUSmU3d617VKfKz4zvF7RqNwor8', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZnpRSklTQ1RpQXdQYlB1cGFhcjY2RmVLRVRvVVpHNXZvdElvM3NpbiI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hZG1pbi9vcmRlciI7czo1OiJyb3V0ZSI7czoxMToiYWRtaW4ub3JkZXIiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1773886806);
+('7dG4p8123SP7CvkSc3VrZa0b522VMxVGDu7JfAgR', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoidWl5V1pLZkNNNVpjNHdkU0x4OWY4bWhMbjliZlc3WFM3TmZlTEM1VyI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6NDM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hZG1pbi9wYWdlP3N0YXR1cz1hbGwiO3M6NToicm91dGUiO3M6MTA6ImFkbWluLnBhZ2UiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1773995528);
 
 -- --------------------------------------------------------
 
@@ -363,6 +441,21 @@ ALTER TABLE `job_batches`
 --
 ALTER TABLE `migrations`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `orders_code_unique` (`code`);
+
+--
+-- Indexes for table `order_items`
+--
+ALTER TABLE `order_items`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `order_items_order_id_foreign` (`order_id`),
+  ADD KEY `order_items_product_id_foreign` (`product_id`);
 
 --
 -- Indexes for table `pages`
@@ -440,7 +533,19 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
+-- AUTO_INCREMENT for table `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `order_items`
+--
+ALTER TABLE `order_items`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `pages`
@@ -464,13 +569,13 @@ ALTER TABLE `post_cats`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `product_cats`
 --
 ALTER TABLE `product_cats`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -481,6 +586,13 @@ ALTER TABLE `users`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `order_items`
+--
+ALTER TABLE `order_items`
+  ADD CONSTRAINT `order_items_order_id_foreign` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `order_items_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `posts`
