@@ -149,7 +149,7 @@ class AdminPageController extends Controller
                     ->whereIn('id', $list_check)
                     ->restore();
                 return redirect('admin/page')->with('success', 'Bạn đã khôi phục thành công!');
-            } elseif ($action = 'permanentlyDelete') {
+            } elseif ($action == 'permanentlyDelete') {
                 Page::withTrashed()
                     ->whereIn('id', $list_check)
                     ->forceDelete();

@@ -114,16 +114,38 @@ class AdminPostController extends Controller
 
     public function show(Request $request)
     {
-        if ($request) {
+        $list_act = [
+            'delete' => 'Xóa tạm thời'
+        ];
+        if ($request->status && $request->status != 'all') {
+            if ($request->status == 'public') {
+                $list_act['pending'] = 'Chờ duyệt';
+                $posts = Post::where('status', 'public');
+            } elseif ($request->status == 'pending') {
+                $list_act['public'] = 'Công khai';
+                $posts = Post::where('status', 'pending');
+            } else {
+                $list_act = [
+                    'permanentlyDelete' => "Xóa vĩnh viễn",
+                    'restore' => 'Khôi phục'
+                ];
+                $posts = Post::onlyTrashed();
+            }
+        } else {
             $posts = Post::where('title', 'like', '%' . $request->keyword . '%');
         }
         $posts = $posts->paginate(10);
+        $num_all = Post::count();
         $num_public = Post::where('status', Post::STATUS_PUBLIC)->count();
         $num_pending = Post::where('status', Post::STATUS_PENDING)->count();
-        return view('admin.post.show', compact([
+        $num_trash = Post::onlyTrashed()->count();
+        return view("admin.post.show", compact([
             'posts',
             'num_public',
-            'num_pending'
+            'num_pending',
+            'num_all',
+            'num_trash',
+            'list_act'
         ]));
     }
 
@@ -217,5 +239,37 @@ class AdminPostController extends Controller
         $cat->delete();
 
         return redirect('admin/post/cat')->with('success', 'Xóa danh mục bài viết thành công.');
+    }
+
+    public function action(Request $request)
+    {
+        $action = $request->action;
+        $list_check = $request->list_check;
+
+        if (!empty($list_check)) {
+            if ($action == 'public') {
+                Post::whereIn('id', $list_check)
+                    ->update(['status' => Post::STATUS_PUBLIC]);
+                return redirect('admin/post')->with('success', 'Bạn đã cập nhật công khai thành công!');
+            } elseif ($action == 'pending') {
+                Post::whereIn('id', $list_check)
+                    ->update(['status' => Post::STATUS_PENDING]);
+                return redirect('admin/post')->with('success', 'Bạn đã cập nhật chờ duyệt thành công!');
+            } elseif ($action == 'delete') {
+                Post::destroy($list_check);
+                return redirect('admin/post')->with('success', 'Bạn đã xóa thành công!');
+            } elseif ($action == 'restore') {
+                Post::withTrashed()
+                    ->whereIn('id', $list_check)
+                    ->restore();
+                return redirect('admin/post')->with('success', 'Bạn đã khôi phục thành công!');
+            } elseif ($action == 'permanentlyDelete') {
+                Post::withTrashed()
+                    ->whereIn('id', $list_check)
+                    ->forceDelete();
+                return redirect('admin/post')->with('success', 'Bạn đã xóa vĩnh viễn thành công!');
+            }
+        }
+        return redirect('admin/post');
     }
 }
