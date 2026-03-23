@@ -22,6 +22,8 @@
                                 class="text-muted">({{ $num_public }})</span></a>
                         <a href="?status=pending" class="text-pink">Chờ duyệt <span
                                 class="text-muted">({{ $num_pending }})</span></a>
+                        <a href="?status=trash" class="text-pink">Vô hiệu hóa <span
+                                class="text-muted">({{ $num_trash }})</span></a>
                     </div>
                     <div class="d-flex align-items-center py-3 gap-2">
                         <select class="form-select w-auto" name="action">
@@ -59,7 +61,8 @@
                                     @endphp
                                     <tr>
                                         <td>
-                                            <input type="checkbox" class="form-check-input" name="list_check[]" value="{{ $page->id }}">
+                                            <input type="checkbox" class="form-check-input" name="list_check[]"
+                                                value="{{ $page->id }}">
                                         </td>
                                         <td scope="row">{{ $t }}</td>
                                         <td><a href="">{{ $page->title }}</a></td>

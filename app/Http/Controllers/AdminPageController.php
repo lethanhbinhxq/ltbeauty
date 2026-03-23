@@ -19,8 +19,10 @@ class AdminPageController extends Controller
         if ($request->status && $request->status != 'all') {
             if ($request->status == 'public') {
                 $pages = Page::where('status', 'public');
-            } else {
+            } elseif ($request->status == 'pending') {
                 $pages = Page::where('status', 'pending');
+            } else {
+                $pages = Page::onlyTrashed();
             }
         } else {
             $pages = Page::where('title', 'like', '%' . $request->keyword . '%');
@@ -29,7 +31,8 @@ class AdminPageController extends Controller
         $num_all = Page::count();
         $num_public = Page::where('status', Page::STATUS_PUBLIC)->count();
         $num_pending = Page::where('status', Page::STATUS_PENDING)->count();
-        return view("admin.page.show", compact('pages', 'num_public', 'num_pending', 'num_all'));
+        $num_trash = Page::onlyTrashed()->count();
+        return view("admin.page.show", compact('pages', 'num_public', 'num_pending', 'num_all', 'num_trash'));
     }
 
     public function insert(Request $request)
