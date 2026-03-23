@@ -110,6 +110,7 @@ class AdminPageController extends Controller
 
     public function action(Request $request)
     {
-        dd($request);
+        $r = $request->list_check;
+        print_r($r);
     }
 }

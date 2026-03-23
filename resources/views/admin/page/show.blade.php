@@ -24,10 +24,10 @@
                                 class="text-muted">({{ $num_pending }})</span></a>
                     </div>
                     <div class="d-flex align-items-center py-3 gap-2">
-                        <select class="form-select w-auto">
-                            <option>Chọn</option>
-                            <option>Tác vụ 1</option>
-                            <option>Tác vụ 2</option>
+                        <select class="form-select w-auto" name="action">
+                            <option value="">Chọn</option>
+                            <option value="public">Công khai</option>
+                            <option value="pending">Chờ duyệt</option>
                         </select>
 
                         <button type="submit" class="btn btn-primary">
@@ -59,7 +59,7 @@
                                     @endphp
                                     <tr>
                                         <td>
-                                            <input type="checkbox" class="form-check-input">
+                                            <input type="checkbox" class="form-check-input" name="list_check[]" value="{{ $page->id }}">
                                         </td>
                                         <td scope="row">{{ $t }}</td>
                                         <td><a href="">{{ $page->title }}</a></td>
