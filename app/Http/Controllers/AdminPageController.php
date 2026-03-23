@@ -16,12 +16,21 @@ class AdminPageController extends Controller
 
     public function show(Request $request)
     {
+        $list_act = [
+            'delete' => 'Xóa tạm thời'
+        ];
         if ($request->status && $request->status != 'all') {
             if ($request->status == 'public') {
+                $list_act['pending'] = 'Chờ duyệt';
                 $pages = Page::where('status', 'public');
             } elseif ($request->status == 'pending') {
+                $list_act['public'] = 'Công khai';
                 $pages = Page::where('status', 'pending');
             } else {
+                $list_act = [
+                    'permanentlyDelete' => "Xóa vĩnh viễn",
+                    'restore' => 'Khôi phục'
+                ];
                 $pages = Page::onlyTrashed();
             }
         } else {
@@ -32,7 +41,14 @@ class AdminPageController extends Controller
         $num_public = Page::where('status', Page::STATUS_PUBLIC)->count();
         $num_pending = Page::where('status', Page::STATUS_PENDING)->count();
         $num_trash = Page::onlyTrashed()->count();
-        return view("admin.page.show", compact('pages', 'num_public', 'num_pending', 'num_all', 'num_trash'));
+        return view("admin.page.show", compact([
+            'pages',
+            'num_public',
+            'num_pending',
+            'num_all',
+            'num_trash',
+            'list_act'
+        ]));
     }
 
     public function insert(Request $request)
@@ -113,7 +129,33 @@ class AdminPageController extends Controller
 
     public function action(Request $request)
     {
-        $r = $request->list_check;
-        print_r($r);
+        $action = $request->action;
+        $list_check = $request->list_check;
+
+        if (!empty($list_check)) {
+            if ($action == 'public') {
+                Page::whereIn('id', $list_check)
+                    ->update(['status' => Page::STATUS_PUBLIC]);
+                return redirect('admin/page')->with('success', 'Bạn đã cập nhật công khai thành công!');
+            } elseif ($action == 'pending') {
+                Page::whereIn('id', $list_check)
+                    ->update(['status' => Page::STATUS_PENDING]);
+                return redirect('admin/page')->with('success', 'Bạn đã cập nhật chờ duyệt thành công!');
+            } elseif ($action == 'delete') {
+                Page::destroy($list_check);
+                return redirect('admin/page')->with('success', 'Bạn đã xóa thành công!');
+            } elseif ($action == 'restore') {
+                Page::withTrashed()
+                    ->whereIn('id', $list_check)
+                    ->restore();
+                return redirect('admin/page')->with('success', 'Bạn đã khôi phục thành công!');
+            } elseif ($action = 'permanentlyDelete') {
+                Page::withTrashed()
+                    ->whereIn('id', $list_check)
+                    ->forceDelete();
+                return redirect('admin/page')->with('success', 'Bạn đã xóa vĩnh viễn thành công!');
+            }
+        }
+        return redirect('admin/page');
     }
 }
