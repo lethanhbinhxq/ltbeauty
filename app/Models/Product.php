@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
     //
+    use SoftDeletes;
     const STATUS_IN_STOCK = 'in_stock';
     const STATUS_OUT_OF_STOCK = 'out_of_stock';
     protected $fillable = [

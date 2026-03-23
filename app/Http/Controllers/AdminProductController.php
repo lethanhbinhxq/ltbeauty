@@ -72,16 +72,38 @@ class AdminProductController extends Controller
     }
 
     public function show(Request $request) {
-        if ($request) {
+        $list_act = [
+            'delete' => 'Xóa tạm thời'
+        ];
+        if ($request->status && $request->status != 'all') {
+            if ($request->status == 'in_stock') {
+                $list_act['out_of_stock'] = 'Hết hàng';
+                $products = Product::where('status', 'in_stock');
+            } elseif ($request->status == 'out_of_stock') {
+                $list_act['in_stock'] = 'Còn hàng';
+                $products = Product::where('status', 'out_of_stock');
+            } else {
+                $list_act = [
+                    'permanentlyDelete' => "Xóa vĩnh viễn",
+                    'restore' => 'Khôi phục'
+                ];
+                $products = Product::onlyTrashed();
+            }
+        } else {
             $products = Product::where('name', 'like', '%' . $request->keyword . '%');
         }
         $products = $products->paginate(10);
+        $num_all = Product::all()->count();
         $num_in_stock = Product::where('status', Product::STATUS_IN_STOCK)->count();
         $num_out_of_stock = Product::where('status', Product::STATUS_OUT_OF_STOCK)->count();
+        $num_trash = Product::onlyTrashed()->count();
         return view('admin.product.show', compact([
             'products',
+            'num_all',
             'num_in_stock',
-            'num_out_of_stock'
+            'num_out_of_stock',
+            'num_trash',
+            'list_act'
         ]));
     }
 
@@ -154,6 +176,37 @@ class AdminProductController extends Controller
         $product->delete();
 
         return redirect('admin/product')->with('success', 'Xóa sản phẩm thành công.');
+    }
+
+    public function action(Request $request) {
+        $action = $request->action;
+        $list_check = $request->list_check;
+
+        if (!empty($list_check)) {
+            if ($action == 'in_stock') {
+                Product::whereIn('id', $list_check)
+                    ->update(['status' => Product::STATUS_IN_STOCK]);
+                return redirect('admin/product')->with('success', 'Bạn đã cập nhật còn hàng thành công!');
+            } elseif ($action == 'out_of_stock') {
+                Product::whereIn('id', $list_check)
+                    ->update(['status' => Product::STATUS_OUT_OF_STOCK]);
+                return redirect('admin/product')->with('success', 'Bạn đã cập nhật hết hàng thành công!');
+            } elseif ($action == 'delete') {
+                Product::destroy($list_check);
+                return redirect('admin/product')->with('success', 'Bạn đã xóa thành công!');
+            } elseif ($action == 'restore') {
+                Product::withTrashed()
+                    ->whereIn('id', $list_check)
+                    ->restore();
+                return redirect('admin/product')->with('success', 'Bạn đã khôi phục thành công!');
+            } elseif ($action == 'permanentlyDelete') {
+                Product::withTrashed()
+                    ->whereIn('id', $list_check)
+                    ->forceDelete();
+                return redirect('admin/product')->with('success', 'Bạn đã xóa vĩnh viễn thành công!');
+            }
+        }
+        return redirect('admin/product');
     }
 
     public function cat()
