@@ -71,6 +71,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('admin/user/insert', [AdminUserController::class, 'insert']);
     Route::post('admin/user/update/{id}', [AdminUserController::class, 'update'])->name('admin.user.update');
     Route::delete('admin/user/delete/{id}', [AdminUserController::class, 'destroy'])->name('admin.user.destroy');
+    Route::post('admin/user/action', [AdminUserController::class, 'action']);
 
     Route::group(['prefix' => 'laravel-filemanager'], function () {
      \UniSharp\LaravelFilemanager\Lfm::routes();

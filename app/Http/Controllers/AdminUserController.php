@@ -50,16 +50,49 @@ class AdminUserController extends Controller
 
     public function show(Request $request)
     {
-        if ($request) {
+        $list_act = [
+            'delete' => 'Xóa tạm thời'
+        ];
+        if ($request->status && $request->status != 'all') {
+            if ($request->status == 'active') {
+                $list_act['pending'] = 'Chờ duyệt';
+                $list_act['blocked'] = 'Bị khóa';
+                $users = User::where('status', 'active');
+            } elseif ($request->status == 'pending') {
+                $list_act['active'] = 'Đang hoạt động';
+                $list_act['blocked'] = 'Bị khóa';
+                $users = User::where('status', 'pending');
+            } elseif ($request->status == 'blocked') {
+                $list_act['active'] = 'Đang hoạt động';
+                $list_act['pending'] = 'Chờ duyệt';
+                $users = User::where('status', 'blocked');
+            } else {
+                $list_act = [
+                    'permanentlyDelete' => "Xóa vĩnh viễn",
+                    'restore' => 'Khôi phục'
+                ];
+                $users = User::onlyTrashed();
+            }
+        } else {
             $users = User::where('name', 'like', '%' . $request->keyword . '%');
         }
         $users = $users->paginate(10);
+        $num_all = User::count();
         $num_active = User::where('status', User::STATUS_ACTIVE)->count();
         $num_pending = User::where('status', User::STATUS_PENDING)->count();
         $num_blocked = User::where('status', User::STATUS_BLOCKED)->count();
+        $num_trash = User::onlyTrashed()->count();
         return view(
             "admin.user.show",
-            compact('users', 'num_active', 'num_pending', 'num_blocked')
+            compact([
+                'users',
+                'num_all', 
+                'num_active', 
+                'num_pending', 
+                'num_blocked',
+                'num_trash',
+                'list_act'
+            ])
         );
     }
 
@@ -108,5 +141,40 @@ class AdminUserController extends Controller
         } else {
             return redirect('admin/user')->with('error', 'Bạn không thể tự xóa chính mình ra khỏi hệ thống.');
         }
+    }
+
+    public function action(Request $request) {
+        $action = $request->action;
+        $list_check = $request->list_check;
+
+        if (!empty($list_check)) {
+            if ($action == 'active') {
+                User::whereIn('id', $list_check)
+                    ->update(['status' => User::STATUS_ACTIVE]);
+                return redirect('admin/user')->with('success', 'Bạn đã cập nhật đang hoạt động thành công!');
+            } elseif ($action == 'pending') {
+                User::whereIn('id', $list_check)
+                    ->update(['status' => User::STATUS_PENDING]);
+                return redirect('admin/user')->with('success', 'Bạn đã cập nhật chờ duyệt thành công!');
+            } elseif ($action == 'blocked') {
+                User::whereIn('id', $list_check)
+                    ->update(['status' => User::STATUS_BLOCKED]);
+                return redirect('admin/user')->with('success', 'Bạn đã cập nhật bị khóa thành công!');
+            } elseif ($action == 'delete') {
+                User::destroy($list_check);
+                return redirect('admin/user')->with('success', 'Bạn đã xóa thành công!');
+            } elseif ($action == 'restore') {
+                User::withTrashed()
+                    ->whereIn('id', $list_check)
+                    ->restore();
+                return redirect('admin/user')->with('success', 'Bạn đã khôi phục thành công!');
+            } elseif ($action == 'permanentlyDelete') {
+                User::withTrashed()
+                    ->whereIn('id', $list_check)
+                    ->forceDelete();
+                return redirect('admin/user')->with('success', 'Bạn đã xóa vĩnh viễn thành công!');
+            }
+        }
+        return redirect('admin/user');
     }
 }
