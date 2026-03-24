@@ -84,11 +84,9 @@
                                             @endif
                                             <td>{{ $user->created_at->timezone('Asia/Ho_Chi_Minh')->format('d/m/Y H:i:s') }}</td>
                                             <td>
-                                                <button class="btn btn-success btn-sm rounded-2 text-white" type="button"
-                                                    data-toggle="tooltip" data-placement="top" title="Edit" data-bs-toggle="modal"
-                                                    data-bs-target="#editModal" data-bs-id="{{ $user->id }}"
-                                                    data-bs-name="{{ $user->name }}" data-bs-status="{{ $user->status }}"><i
-                                                        class="fa fa-edit"></i></button>
+                                                <a href="{{ route('admin.user.edit', $user->id) }}" class="btn btn-success btn-sm rounded-2 text-white" type="button"
+                                                    data-toggle="tooltip" data-placement="top" title="Edit"><i
+                                                        class="fa fa-edit"></i></a>
                                                 @if (Auth::id() != $user->id)
                                                     <button type="button" class="btn btn-danger btn-sm rounded-2 text-white"
                                                         data-toggle="tooltip" data-placement="top" title="Delete" data-bs-toggle="modal"
@@ -109,7 +107,6 @@
                     </table>
                     {{ $users->appends(request()->query())->links() }}
 
-                    @include('admin.user.edit')
                     @include('admin.user.delete')
                 </form>
             </div>

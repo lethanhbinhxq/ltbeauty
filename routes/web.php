@@ -70,6 +70,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('admin/user', [AdminUserController::class, 'show']);
     Route::get('admin/user/add', [AdminUserController::class, 'add']);
     Route::post('admin/user/insert', [AdminUserController::class, 'insert']);
+    Route::get('admin/user/edit/{id}', [AdminUserController::class, 'edit'])->name('admin.user.edit');
     Route::post('admin/user/update/{id}', [AdminUserController::class, 'update'])->name('admin.user.update');
     Route::delete('admin/user/delete/{id}', [AdminUserController::class, 'destroy'])->name('admin.user.destroy');
     Route::post('admin/user/action', [AdminUserController::class, 'action']);
