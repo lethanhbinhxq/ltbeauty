@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Order extends Model
 {
     //
+    use SoftDeletes;
     public const PAYMENT_COD = 'cod';
     public const PAYMENT_BANK = 'bank_transfer';
     public const PAYMENT_UNPAID = 'unpaid';
