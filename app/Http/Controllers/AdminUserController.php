@@ -86,9 +86,9 @@ class AdminUserController extends Controller
             "admin.user.show",
             compact([
                 'users',
-                'num_all', 
-                'num_active', 
-                'num_pending', 
+                'num_all',
+                'num_active',
+                'num_pending',
                 'num_blocked',
                 'num_trash',
                 'list_act'
@@ -96,7 +96,8 @@ class AdminUserController extends Controller
         );
     }
 
-    public function edit($id) {
+    public function edit($id)
+    {
         $user = User::find($id);
         return view('admin.user.edit', compact('user'));
     }
@@ -114,22 +115,31 @@ class AdminUserController extends Controller
                         User::STATUS_BLOCKED,
                     ])
                 ],
+                'password' => 'nullable|min:6|confirmed',
             ],
             [
                 'required' => ':attribute không được để trống.',
                 'max' => ':attribute không được vượt quá :max ký tự.',
                 'in' => ':attribute không hợp lệ.',
                 'string' => ':attribute phải là chuỗi.',
+                'min' => ':attribute phải có ít nhất :min ký tự.',
+                'confirmed' => ':attribute xác nhận không khớp.',
             ],
             [
                 'name' => 'Họ và tên',
                 'status' => 'Trạng thái',
+                'password' => 'Mật khẩu',
             ]
         );
 
         $user = User::find($id);
+
         $user->name = $request->name;
         $user->status = $request->status;
+
+        if (!empty($request->password)) {
+            $user->password = Hash::make($request->password);
+        }
 
         $user->save();
 
@@ -148,7 +158,8 @@ class AdminUserController extends Controller
         }
     }
 
-    public function action(Request $request) {
+    public function action(Request $request)
+    {
         $action = $request->action;
         $list_check = $request->list_check;
 
