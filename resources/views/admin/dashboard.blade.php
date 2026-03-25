@@ -64,18 +64,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @php
-                            $t = 0;
-                            @endphp
                             {{-- ORDER 1 --}}
                             @foreach ($orders as $order)
-                            @php
-                            $t++;
-                            @endphp
                                 <tr class="border-top">
-                                    <td>
-                                        <div class="fw-bold text-center">{{ $t }}</div>
-                                    </td>
                                     <td>
                                         <div class="fw-bold">{{ $order->code }}</div>
                                         <small class="text-muted">3 sản phẩm</small>
