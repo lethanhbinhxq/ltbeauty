@@ -2,10 +2,6 @@ a {
     color: #E966A0;
 }
 
-#sidebar a {
-    color: #FFBDF7;
-}
-
 a, a:hover {
     text-decoration: none;
 }
@@ -96,12 +92,15 @@ ul#sidebar-menu * {
 }
 
 .nav-link.active>a,
-.nav-link:hover>li>a {
-    color: #E966A0;
+.nav-link.active>i,
+.nav-link:hover>a,
+.nav-link:hover>i
+ {
+    color: #FFBDF7;
 }
 
-.nav-link>li>a>i {
-    color: #787272;
+.nav-link>i {
+    color: #E966A0;
     font-size: 18px;
 }
 

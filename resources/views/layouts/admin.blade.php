@@ -56,7 +56,7 @@
         <div id="page-body" class="d-flex">
             <div id="sidebar" class="bg-dark">
                 <ul id="sidebar-menu">
-                    <li class="nav-link {{ request()->is('admin/') ? 'active' : '' }}">
+                    <li class="nav-link {{ request()->is('admin') ? 'active' : '' }}">
                         <a href="{{ url('/admin') }}">
                             <div class="nav-link-icon d-inline-flex">
                                 <i class="fa-solid fa-chart-line"></i>
@@ -71,7 +71,7 @@
                             </div>
                             Trang
                         </a>
-                        <i class="arrow fas fa-angle-right text-pink-light"></i>
+                        <i class="arrow fas fa-angle-right"></i>
 
                         <ul class="sub-menu">
                             <li><a href="{{ url('/admin/page/add') }}">Thêm mới</a></li>
@@ -85,7 +85,7 @@
                             </div>
                             Bài viết
                         </a>
-                        <i class="arrow fas fa-angle-right text-pink-light"></i>
+                        <i class="arrow fas fa-angle-right"></i>
                         <ul class="sub-menu">
                             <li><a href="{{ url('/admin/post/add') }}">Thêm mới</a></li>
                             <li><a href="{{ url('/admin/post') }}">Danh sách</a></li>
@@ -99,7 +99,7 @@
                             </div>
                             Sản phẩm
                         </a>
-                        <i class="arrow fas fa-angle-right text-pink-light"></i>
+                        <i class="arrow fas fa-angle-right"></i>
                         <ul class="sub-menu">
                             <li><a href="{{ url('/admin/product/add') }}">Thêm mới</a></li>
                             <li><a href="{{ url('/admin/product') }}">Danh sách</a></li>
@@ -125,7 +125,7 @@
                             </div>
                             Người dùng
                         </a>
-                        <i class="arrow fas fa-angle-right text-pink-light"></i>
+                        <i class="arrow fas fa-angle-right"></i>
 
                         <ul class="sub-menu">
                             <li><a href="{{ url('/admin/user/add') }}">Thêm mới</a></li>
@@ -139,7 +139,7 @@
                             </div>
                             Phân quyền
                         </a>
-                        <i class="arrow fas fa-angle-right text-pink-light"></i>
+                        <i class="arrow fas fa-angle-right"></i>
                         <ul class="sub-menu">
                             <li><a href="{{ url('/admin/role/permission') }}">Quyền</a></li>
                             <li><a href="{{ url('/admin/role/add') }}">Thêm vai trò</a></li>
