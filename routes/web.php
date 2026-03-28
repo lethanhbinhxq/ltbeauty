@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminDashboardController;
@@ -39,10 +40,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('admin/page/delete/{id}', [AdminPageController::class, 'destroy']);
     Route::post('admin/page/action', [AdminPageController::class, 'action']);
 
-    Route::get('admin/role/permission', [AdminRoleController::class, 'permission']);
-    Route::get('admin/role', [AdminRoleController::class, 'showRole']);
-    Route::get('admin/role/add', [AdminRoleController::class, 'addRole']);
-
     Route::get('admin/post', [AdminPostController::class, 'show']);
     Route::get('admin/post/add', [AdminPostController::class, 'add']);
     Route::post('admin/post/insert', [AdminPostController::class, 'insert']);
@@ -74,6 +71,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('admin/user/update/{id}', [AdminUserController::class, 'update'])->name('admin.user.update');
     Route::delete('admin/user/delete/{id}', [AdminUserController::class, 'destroy'])->name('admin.user.destroy');
     Route::post('admin/user/action', [AdminUserController::class, 'action']);
+
+    Route::get('admin/permission/add', [PermissionController::class, 'add'])->name('permission.add');
+    Route::post('admin/permission/store', [PermissionController::class, 'store'])->name('permission.store');
+    Route::get('admin/permission/edit/{id}', [PermissionController::class, 'edit'])->name('permission.edit');
+    Route::post('admin/permission/update/{id}', [PermissionController::class, 'update'])->name('permission.update');
+    Route::delete('admin/permission/delete/{id}', [PermissionController::class, 'delete'])->name('permission.delete');
 
     Route::group(['prefix' => 'laravel-filemanager'], function () {
      \UniSharp\LaravelFilemanager\Lfm::routes();

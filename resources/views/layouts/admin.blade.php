@@ -133,7 +133,7 @@
                         </ul>
                     </li>
                     <li class="nav-link {{ request()->is('admin/role*') ? 'active' : '' }}">
-                        <a href="{{ url('/admin/role/permission') }}">
+                        <a href="{{ route('permission.add') }}">
                             <div class="nav-link-icon d-inline-flex">
                                 <i class="fa-solid fa-unlock"></i>
                             </div>
@@ -141,7 +141,7 @@
                         </a>
                         <i class="arrow fas fa-angle-right"></i>
                         <ul class="sub-menu">
-                            <li><a href="{{ url('/admin/role/permission') }}">Quyền</a></li>
+                            <li><a href="{{ route('permission.add') }}">Quyền</a></li>
                             <li><a href="{{ url('/admin/role/add') }}">Thêm vai trò</a></li>
                             <li><a href="{{ url('/admin/role') }}">Danh sách vai trò</a></li>
                         </ul>
