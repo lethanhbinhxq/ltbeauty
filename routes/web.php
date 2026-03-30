@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RoleController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminOrderController;
@@ -77,6 +78,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('admin/permission/edit/{id}', [PermissionController::class, 'edit'])->name('permission.edit');
     Route::post('admin/permission/update/{id}', [PermissionController::class, 'update'])->name('permission.update');
     Route::delete('admin/permission/delete/{id}', [PermissionController::class, 'delete'])->name('permission.delete');
+
+    Route::get('admin/role', [RoleController::class, 'show'])->name('role.show');
 
     Route::group(['prefix' => 'laravel-filemanager'], function () {
      \UniSharp\LaravelFilemanager\Lfm::routes();

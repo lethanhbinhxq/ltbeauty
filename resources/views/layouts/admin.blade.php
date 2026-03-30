@@ -132,7 +132,7 @@
                             <li><a href="{{ url('/admin/user') }}">Danh sách</a></li>
                         </ul>
                     </li>
-                    <li class="nav-link {{ request()->is('admin/role*') ? 'active' : '' }}">
+                    <li class="nav-link {{ (request()->is('admin/permission*') || request()->is('admin/role*')) ? 'active' : '' }}">
                         <a href="{{ route('permission.add') }}">
                             <div class="nav-link-icon d-inline-flex">
                                 <i class="fa-solid fa-unlock"></i>
