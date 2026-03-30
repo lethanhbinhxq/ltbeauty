@@ -80,10 +80,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('admin/permission/delete/{id}', [PermissionController::class, 'delete'])->name('permission.delete');
 
     Route::get('admin/role', [RoleController::class, 'show'])->name('role.show');
+    Route::get('admin/role/add', [RoleController::class, 'add'])->name('role.add');
+    Route::post('admin/role/store', [RoleController::class, 'store'])->name('role.store');
+    Route::get('admin/role/edit/{id}', [RoleController::class, 'edit'])->name('role.edit');
+    Route::post('admin/role/update/{id}', [RoleController::class, 'update'])->name('role.update');
 
     Route::group(['prefix' => 'laravel-filemanager'], function () {
-     \UniSharp\LaravelFilemanager\Lfm::routes();
- });
+        \UniSharp\LaravelFilemanager\Lfm::routes();
+    });
 })->middleware(['auth', 'verified']);
 
 Route::get('/email/verify', function () {

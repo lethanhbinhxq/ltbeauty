@@ -50,8 +50,8 @@
                                     <td><a href="">{{ $role->name }}</a></td>
                                     <td>{{ $role->description }}</td>
                                     <td>{{ $role->created_at->timezone('Asia/Ho_Chi_Minh')->format('d/m/Y H:i:s') }}</td>
-                                    <td><button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip"
-                                            data-placement="top" title="Edit"><i class="fa fa-edit"></i></button>
+                                    <td><a href="{{ route('role.edit', $role->id) }}" class="btn btn-success btn-sm rounded-0" data-toggle="tooltip"
+                                            data-placement="top" title="Edit"><i class="fa fa-edit"></i></a>
                                         <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip"
                                             data-placement="top" title="Delete"><i class="fa fa-trash"></i></button>
                                     </td>
@@ -59,7 +59,7 @@
                             @endforeach
                             @else 
                             <tr>
-                                <td>Không tìm thấy bản ghi</td>
+                                <td colspan="6">Không tìm thấy bản ghi</td>
                             </tr>
                         @endif
                     </tbody>
