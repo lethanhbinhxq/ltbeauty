@@ -37,25 +37,31 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @php
-                        $t = 1;
-                        @endphp
-                        @foreach ($roles as $role)
+                        @if ($roles->total() > 0)
+                            @php
+                                $t = 1;
+                            @endphp
+                            @foreach ($roles as $role)
+                                <tr>
+                                    <td>
+                                        <input type="checkbox">
+                                    </td>
+                                    <td scope="row">{{ $t++ }}</td>
+                                    <td><a href="">{{ $role->name }}</a></td>
+                                    <td>{{ $role->description }}</td>
+                                    <td>{{ $role->created_at->timezone('Asia/Ho_Chi_Minh')->format('d/m/Y H:i:s') }}</td>
+                                    <td><button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip"
+                                            data-placement="top" title="Edit"><i class="fa fa-edit"></i></button>
+                                        <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip"
+                                            data-placement="top" title="Delete"><i class="fa fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            @else 
                             <tr>
-                                <td>
-                                    <input type="checkbox">
-                                </td>
-                                <td scope="row">{{ $t++ }}</td>
-                                <td><a href="">{{ $role->name }}</a></td>
-                                <td>{{ $role->description }}</td>
-                                <td>{{ $role->created_at->timezone('Asia/Ho_Chi_Minh')->format('d/m/Y H:i:s') }}</td>
-                                <td><button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip"
-                                        data-placement="top" title="Edit"><i class="fa fa-edit"></i></button>
-                                    <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip"
-                                        data-placement="top" title="Delete"><i class="fa fa-trash"></i></button>
-                                </td>
+                                <td>Không tìm thấy bản ghi</td>
                             </tr>
-                        @endforeach
+                        @endif
                     </tbody>
                 </table>
 
