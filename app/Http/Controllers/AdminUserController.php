@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -99,7 +100,8 @@ class AdminUserController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
-        return view('admin.user.edit', compact('user'));
+        $roles = Role::all();
+        return view('admin.user.edit', compact('user', 'roles'));
     }
 
     public function update(Request $request, $id)
@@ -142,6 +144,8 @@ class AdminUserController extends Controller
         }
 
         $user->save();
+
+        $user->roles()->sync($request->roles);
 
         return redirect('admin/user')->with('success', 'Cập nhật thông tin người dùng thành công');
     }

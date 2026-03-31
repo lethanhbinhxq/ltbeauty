@@ -74,7 +74,11 @@
                                             <th scope="row">{{$t}}</th>
                                             <td>{{$user->name}}</td>
                                             <td>{{$user->email}}</td>
-                                            <td>Admintrator</td>
+                                            <td>
+                                                @foreach ($user->roles as $role)
+                                                    <span class="badge text-bg-info">{{ $role->name }}</span>
+                                                @endforeach
+                                            </td>
                                             @if($user->status == App\Models\User::STATUS_ACTIVE)
                                                 <td><span class="badge text-bg-success">Đang hoạt động</span></td>
                                             @elseif ($user->status == App\Models\User::STATUS_PENDING)
