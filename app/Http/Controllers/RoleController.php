@@ -28,15 +28,22 @@ class RoleController extends Controller
     {
         $request->validate(
             [
-                'name' => 'required|max:255',
-                'description' => 'required|string',
+                'name' => 'required|max:255|unique:roles,name',
+                'description' => 'required',
+                'permission_id' => 'nullable|array',
+                'permission_id.*' => 'exists:permissions,id',
             ],
             [
                 'required' => ':attribute không được để trống.',
+                'max' => ':attribute không được vượt quá :max ký tự.',
+                'unique' => ':attribute đã tồn tại.',
+                'array' => ':attribute phải là một mảng.',
+                'exists' => ':attribute không hợp lệ.',
             ],
             [
                 'name' => 'Tên vai trò',
                 'description' => 'Mô tả',
+                'permission_id' => 'Danh sách quyền',
             ]
         );
 
@@ -47,5 +54,54 @@ class RoleController extends Controller
 
         $role->permissions()->attach($request->permission_id);
         return redirect(route('role.show'))->with('success', 'Bạn đã thêm vai trò mới thành công');
+    }
+
+    public function edit($id)
+    {
+        $permissions = Permission::all()->groupBy(function ($permission) {
+            return explode('.', $permission->slug)[0];
+        });
+        $role = Role::find($id);
+        return view('admin.role.edit', compact('permissions', 'role'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate(
+            [
+                'name' => 'required|max:255|unique:roles,name,' . $id,
+                'description' => 'required',
+                'permission_id' => 'nullable|array',
+                'permission_id.*' => 'exists:permissions,id',
+            ],
+            [
+                'required' => ':attribute không được để trống.',
+                'max' => ':attribute không được vượt quá :max ký tự.',
+                'unique' => ':attribute đã tồn tại.',
+                'array' => ':attribute phải là một mảng.',
+                'exists' => ':attribute không hợp lệ.',
+            ],
+            [
+                'name' => 'Tên vai trò',
+                'description' => 'Mô tả',
+                'permission_id' => 'Danh sách quyền',
+            ]
+        );
+
+        $role = Role::find($id);
+        $role->update([
+            'name' => $request->name,
+            'description' => $request->description,
+        ]);
+        $role->permissions()->sync($request->permission_id);
+        return redirect(route('role.show'))->with('success', 'Bạn đã cập nhật vai trò thành công');
+    }
+
+    public function delete($id)
+    {
+        $role = Role::find($id);
+        $role->delete();
+
+        return redirect('admin/role')->with('success', 'Xóa vai trò thành công.');
     }
 }

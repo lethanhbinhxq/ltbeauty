@@ -1,13 +1,13 @@
-<div class="modal fade" id="deletePermissionModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+<div class="modal fade" id="deleteRoleModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Xóa quyền</h5>
+                <h5 class="modal-title" id="deleteModalLabel">Xóa vai trò</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
             <div class="modal-body">
-                Bạn có chắc chắn muốn xóa quyền <strong id="delete-name"></strong>?
+                Bạn có chắc chắn muốn xóa vai trò <strong id="delete-name"></strong>?
             </div>
 
             <div class="modal-footer">

@@ -84,6 +84,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('admin/role/store', [RoleController::class, 'store'])->name('role.store');
     Route::get('admin/role/edit/{id}', [RoleController::class, 'edit'])->name('role.edit');
     Route::post('admin/role/update/{id}', [RoleController::class, 'update'])->name('role.update');
+    Route::delete('admin/role/delete/{id}', [RoleController::class, 'delete'])->name('role.delete');
 
     Route::group(['prefix' => 'laravel-filemanager'], function () {
         \UniSharp\LaravelFilemanager\Lfm::routes();

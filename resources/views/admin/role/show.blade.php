@@ -47,17 +47,19 @@
                                         <input type="checkbox">
                                     </td>
                                     <td scope="row">{{ $t++ }}</td>
-                                    <td><a href="">{{ $role->name }}</a></td>
+                                    <td><a href="{{ route('role.edit', $role->id) }}">{{ $role->name }}</a></td>
                                     <td>{{ $role->description }}</td>
                                     <td>{{ $role->created_at->timezone('Asia/Ho_Chi_Minh')->format('d/m/Y H:i:s') }}</td>
-                                    <td><a href="{{ route('role.edit', $role->id) }}" class="btn btn-success btn-sm rounded-0" data-toggle="tooltip"
-                                            data-placement="top" title="Edit"><i class="fa fa-edit"></i></a>
-                                        <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip"
-                                            data-placement="top" title="Delete"><i class="fa fa-trash"></i></button>
+                                    <td><a href="{{ route('role.edit', $role->id) }}" class="btn btn-success btn-sm rounded-2"
+                                            data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></a>
+                                        <button class="btn btn-danger btn-sm rounded-2" type="button" data-toggle="tooltip"
+                                            data-placement="top" title="Delete" data-bs-toggle="modal"
+                                            data-bs-target="#deleteRoleModal" data-bs-id="{{ $role->id }}"
+                                            data-bs-name="{{ $role->name }}"><i class="fa fa-trash"></i></button>
                                     </td>
                                 </tr>
                             @endforeach
-                            @else 
+                        @else
                             <tr>
                                 <td colspan="6">Không tìm thấy bản ghi</td>
                             </tr>
@@ -67,5 +69,7 @@
 
             </div>
         </div>
+        @include('admin.role.delete')
+        <script src="{{ asset('js/admin.role.js') }}"></script>
     </div>
 @endsection
