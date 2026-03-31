@@ -76,7 +76,9 @@
                                             <td>{{$user->email}}</td>
                                             <td>
                                                 @foreach ($user->roles as $role)
-                                                    <span class="badge text-bg-info">{{ $role->name }}</span>
+                                                    <a href="{{ route('role.edit', $role->id) }}">
+                                                        <span class="badge text-bg-info">{{ $role->name }}</span>
+                                                    </a>
                                                 @endforeach
                                             </td>
                                             @if($user->status == App\Models\User::STATUS_ACTIVE)
