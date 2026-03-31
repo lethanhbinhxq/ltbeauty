@@ -6,12 +6,18 @@ use App\Http\Controllers\Controller;
 use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class RoleController extends Controller
 {
     //
     public function show()
     {
+        // if (Gate::allows('role.view')) {
+        //     dd("Được xem danh sách vai trò");
+        // } else {
+        //     abort(403);
+        // }
         $roles = Role::paginate(10);
         return view('admin.role.show', compact('roles'));
     }
