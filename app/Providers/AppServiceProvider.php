@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Permission;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -25,8 +26,11 @@ class AppServiceProvider extends ServiceProvider
         //
         Paginator::useBootstrapFive();
 
-        Gate::define('role.view', function(User $user){
-            return true;
-        });
+        $permissions = Permission::all();
+        foreach ($permissions as $permission) {
+            Gate::define($permission->slug, function (User $user) use ($permission) {
+                return $user->hasPermission($permission->slug);
+            });
+        }
     }
 }

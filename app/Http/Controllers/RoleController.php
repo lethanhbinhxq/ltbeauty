@@ -13,17 +13,18 @@ class RoleController extends Controller
     //
     public function show()
     {
-        // if (Gate::allows('role.view')) {
-        //     dd("Được xem danh sách vai trò");
-        // } else {
-        //     abort(403);
-        // }
+        if (!Gate::allows('role.view')) {
+            abort(403);
+        }
         $roles = Role::paginate(10);
         return view('admin.role.show', compact('roles'));
     }
 
     public function add()
     {
+        if (!Gate::allows('role.add')) {
+            abort(403);
+        }
         $permissions = Permission::all()->groupBy(function ($permission) {
             return explode('.', $permission->slug)[0];
         });
@@ -32,6 +33,9 @@ class RoleController extends Controller
 
     public function store(Request $request)
     {
+        if (!Gate::allows('role.add')) {
+            abort(403);
+        }
         $request->validate(
             [
                 'name' => 'required|max:255|unique:roles,name',
@@ -64,6 +68,9 @@ class RoleController extends Controller
 
     public function edit($id)
     {
+        if (!Gate::allows('role.edit')) {
+            abort(403);
+        }
         $permissions = Permission::all()->groupBy(function ($permission) {
             return explode('.', $permission->slug)[0];
         });
@@ -73,6 +80,9 @@ class RoleController extends Controller
 
     public function update(Request $request, $id)
     {
+        if (!Gate::allows('role.edit')) {
+            abort(403);
+        }
         $request->validate(
             [
                 'name' => 'required|max:255|unique:roles,name,' . $id,
@@ -105,6 +115,9 @@ class RoleController extends Controller
 
     public function delete($id)
     {
+        if (!Gate::allows('role.delete')) {
+            abort(403);
+        }
         $role = Role::find($id);
         $role->delete();
 
