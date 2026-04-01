@@ -73,7 +73,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('admin/user/delete/{id}', [AdminUserController::class, 'destroy'])->name('admin.user.destroy')->can('user.delete');
     Route::post('admin/user/action', [AdminUserController::class, 'action'])->can('user.view');
 
-    Route::get('admin/permission/add', [PermissionController::class, 'add'])->name('permission.add')->can('permission.add');
+    Route::get('admin/permission/add', [PermissionController::class, 'add'])->name('permission.add')->can('permission.view');
     Route::post('admin/permission/store', [PermissionController::class, 'store'])->name('permission.store')->can('permission.add');
     Route::get('admin/permission/edit/{id}', [PermissionController::class, 'edit'])->name('permission.edit')->can('permission.edit');
     Route::post('admin/permission/update/{id}', [PermissionController::class, 'update'])->name('permission.update')->can('permission.edit');

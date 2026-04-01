@@ -63,7 +63,8 @@
                                     @endphp
                                     <tr>
                                         <td>
-                                            <input type="checkbox" class="form-check-input" name="list_check[]" value="{{ $post->id }}">
+                                            <input type="checkbox" class="form-check-input" name="list_check[]"
+                                                value="{{ $post->id }}">
                                         </td>
                                         <td scope="row">{{ $t }}</td>
                                         <td><img src="{{ asset($post->thumbnail) }}" alt="" width="80"></td>
@@ -76,14 +77,19 @@
                                             <td><span class="badge text-bg-warning">Chờ duyệt</span></td>
                                         @endif
                                         <td>
-                                            <a href="{{ route('admin.post.edit', $post->id) }}"
-                                                class="btn btn-success btn-sm rounded-2 text-white" title="Edit">
-                                                <i class="fa fa-edit"></i>
-                                            </a>
-                                            <button type="button" class="btn btn-danger btn-sm rounded-2 text-white"
-                                                data-toggle="tooltip" data-placement="top" title="Delete" data-bs-toggle="modal"
-                                                data-bs-target="#deletePostModal" data-bs-id="{{ $post->id }}"
-                                                data-title="{{ $post->title }}"><i class="fa fa-trash"></i></button>
+                                            @can('post.edit')
+                                                <a href="{{ route('admin.post.edit', $post->id) }}"
+                                                    class="btn btn-success btn-sm rounded-2 text-white" title="Edit">
+                                                    <i class="fa fa-edit"></i>
+                                                </a>
+                                            @endcan
+
+                                            @can('post.delete')
+                                                <button type="button" class="btn btn-danger btn-sm rounded-2 text-white"
+                                                    data-toggle="tooltip" data-placement="top" title="Delete" data-bs-toggle="modal"
+                                                    data-bs-target="#deletePostModal" data-bs-id="{{ $post->id }}"
+                                                    data-title="{{ $post->title }}"><i class="fa fa-trash"></i></button>
+                                            @endcan
                                         </td>
 
                                     </tr>

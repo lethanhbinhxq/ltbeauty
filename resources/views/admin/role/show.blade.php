@@ -50,12 +50,17 @@
                                     <td><a href="{{ route('role.edit', $role->id) }}">{{ $role->name }}</a></td>
                                     <td>{{ $role->description }}</td>
                                     <td>{{ $role->created_at->timezone('Asia/Ho_Chi_Minh')->format('d/m/Y H:i:s') }}</td>
-                                    <td><a href="{{ route('role.edit', $role->id) }}" class="btn btn-success btn-sm rounded-2"
-                                            data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></a>
-                                        <button class="btn btn-danger btn-sm rounded-2" type="button" data-toggle="tooltip"
-                                            data-placement="top" title="Delete" data-bs-toggle="modal"
-                                            data-bs-target="#deleteRoleModal" data-bs-id="{{ $role->id }}"
-                                            data-bs-name="{{ $role->name }}"><i class="fa fa-trash"></i></button>
+                                    <td>
+                                        @can('role.edit')
+                                            <a href="{{ route('role.edit', $role->id) }}" class="btn btn-success btn-sm rounded-2"
+                                                data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></a>
+                                        @endcan
+                                        @can('role.delete')
+                                            <button class="btn btn-danger btn-sm rounded-2" type="button" data-toggle="tooltip"
+                                                data-placement="top" title="Delete" data-bs-toggle="modal"
+                                                data-bs-target="#deleteRoleModal" data-bs-id="{{ $role->id }}"
+                                                data-bs-name="{{ $role->name }}"><i class="fa fa-trash"></i></button>
+                                        @endcan
                                     </td>
                                 </tr>
                             @endforeach

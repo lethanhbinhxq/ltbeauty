@@ -29,7 +29,7 @@
                     <div class="d-flex align-items-center py-3 gap-2">
                         <select name="action" class="form-select w-auto">
                             <option>Chọn</option>
-                            @foreach ($list_act as $k => $act) 
+                            @foreach ($list_act as $k => $act)
                                 <option value="{{ $k }}">{{ $act }}</option>
                             @endforeach
                         </select>
@@ -65,7 +65,8 @@
                                             $t++;
                                         @endphp
                                         <td>
-                                            <input type="checkbox" class="form-check-input" name="list_check[]" value="{{ $product->id }}">
+                                            <input type="checkbox" class="form-check-input" name="list_check[]"
+                                                value="{{ $product->id }}">
                                         </td>
                                         <td>{{ $t }}</td>
                                         <td><img src="{{ asset($product->thumbnail) }}" alt="" width="80"></td>
@@ -79,14 +80,19 @@
                                             <td><span class="badge text-bg-dark">Hết hàng</span></td>
                                         @endif
                                         <td>
-                                            <a href="{{ route('admin.product.edit', $product->id) }}"
-                                                class="btn btn-success btn-sm rounded-2 text-white" title="Edit">
-                                                <i class="fa fa-edit"></i>
-                                            </a>
-                                            <button type="button" class="btn btn-danger btn-sm rounded-2 text-white"
-                                                data-toggle="tooltip" data-placement="top" title="Delete" data-bs-toggle="modal"
-                                                data-bs-target="#deleteProductModal" data-bs-id="{{ $product->id }}"
-                                                data-title="{{ $product->name }}"><i class="fa fa-trash"></i></button>
+                                            @can('product.edit')
+                                                <a href="{{ route('admin.product.edit', $product->id) }}"
+                                                    class="btn btn-success btn-sm rounded-2 text-white" title="Edit">
+                                                    <i class="fa fa-edit"></i>
+                                                </a>
+                                            @endcan
+
+                                            @can('product.delete')
+                                                <button type="button" class="btn btn-danger btn-sm rounded-2 text-white"
+                                                    data-toggle="tooltip" data-placement="top" title="Delete" data-bs-toggle="modal"
+                                                    data-bs-target="#deleteProductModal" data-bs-id="{{ $product->id }}"
+                                                    data-title="{{ $product->name }}"><i class="fa fa-trash"></i></button>
+                                            @endcan
                                         </td>
                                     </tr>
                                 @endforeach

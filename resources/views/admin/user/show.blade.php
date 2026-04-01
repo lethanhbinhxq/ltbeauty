@@ -90,14 +90,19 @@
                                             @endif
                                             <td>{{ $user->created_at->timezone('Asia/Ho_Chi_Minh')->format('d/m/Y H:i:s') }}</td>
                                             <td>
-                                                <a href="{{ route('admin.user.edit', $user->id) }}" class="btn btn-success btn-sm rounded-2 text-white" type="button"
-                                                    data-toggle="tooltip" data-placement="top" title="Edit"><i
-                                                        class="fa fa-edit"></i></a>
+                                                @can('user.edit')
+                                                    <a href="{{ route('admin.user.edit', $user->id) }}"
+                                                        class="btn btn-success btn-sm rounded-2 text-white" type="button"
+                                                        data-toggle="tooltip" data-placement="top" title="Edit"><i
+                                                            class="fa fa-edit"></i></a>
+                                                @endcan
                                                 @if (Auth::id() != $user->id)
-                                                    <button type="button" class="btn btn-danger btn-sm rounded-2 text-white"
-                                                        data-toggle="tooltip" data-placement="top" title="Delete" data-bs-toggle="modal"
-                                                        data-bs-target="#deleteModal" data-bs-id="{{ $user->id }}"
-                                                        data-bs-name="{{ $user->name }}"><i class="fa fa-trash"></i></button>
+                                                    @can('user.delete')
+                                                        <button type="button" class="btn btn-danger btn-sm rounded-2 text-white"
+                                                            data-toggle="tooltip" data-placement="top" title="Delete" data-bs-toggle="modal"
+                                                            data-bs-target="#deleteModal" data-bs-id="{{ $user->id }}"
+                                                            data-bs-name="{{ $user->name }}"><i class="fa fa-trash"></i></button>
+                                                    @endcan
                                                 @endif
                                             </td>
                                         </tr>

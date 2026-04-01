@@ -28,7 +28,7 @@
                     <div class="d-flex align-items-center py-3 gap-2">
                         <select class="form-select w-auto" name="action">
                             <option value="">Chọn</option>
-                            @foreach ($list_act as $k => $act) 
+                            @foreach ($list_act as $k => $act)
                                 <option value="{{ $k }}">{{ $act }}</option>
                             @endforeach
                         </select>
@@ -76,14 +76,18 @@
                                             @endif
                                             <td>{{ $page->created_at->timezone('Asia/Ho_Chi_Minh')->format('d/m/Y H:i:s') }}</td>
                                             <td>
-                                                <a href="{{ route('admin.page.edit', $page->id) }}"
-                                                    class="btn btn-success btn-sm rounded-2 text-white" title="Edit">
-                                                    <i class="fa fa-edit"></i>
-                                                </a>
-                                                <button type="button" class="btn btn-danger btn-sm rounded-2 text-white"
-                                                    data-toggle="tooltip" data-placement="top" title="Delete" data-bs-toggle="modal"
-                                                    data-bs-target="#deletePageModal" data-bs-id="{{ $page->id }}"
-                                                    data-title="{{ $page->title }}"><i class="fa fa-trash"></i></button>
+                                                @can('page.edit')
+                                                    <a href="{{ route('admin.page.edit', $page->id) }}"
+                                                        class="btn btn-success btn-sm rounded-2 text-white" title="Edit">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                @endcan
+                                                @can('page.delete')
+                                                    <button type="button" class="btn btn-danger btn-sm rounded-2 text-white"
+                                                        data-toggle="tooltip" data-placement="top" title="Delete" data-bs-toggle="modal"
+                                                        data-bs-target="#deletePageModal" data-bs-id="{{ $page->id }}"
+                                                        data-title="{{ $page->title }}"><i class="fa fa-trash"></i></button>
+                                                @endcan
                                             </td>
                                         </tr>
                                     @endforeach

@@ -29,9 +29,15 @@
                         <i class="plus-icon fas fa-plus-circle text-lavender"></i>
                     </button>
                     <div class="dropdown-menu bg-pink">
-                        <a class="dropdown-item text-pink-soft" href="{{ url('/admin/post/add') }}">Thêm bài viết</a>
-                        <a class="dropdown-item text-pink-soft" href="{{ url('/admin/product/add') }}">Thêm sản phẩm</a>
-                        <a class="dropdown-item text-pink-soft" href="{{ url('/admin/order') }}">Thêm đơn hàng</a>
+                        @can('post.add')
+                            <a class="dropdown-item text-pink-soft" href="{{ url('/admin/post/add') }}">Thêm bài viết</a>
+                        @endcan
+                        @can('product.add')
+                            <a class="dropdown-item text-pink-soft" href="{{ url('/admin/product/add') }}">Thêm sản phẩm</a>
+                        @endcan
+                        @can('order.view')
+                            <a class="dropdown-item text-pink-soft" href="{{ url('/admin/order') }}">Xem đơn hàng</a>
+                        @endcan
                     </div>
                 </div>
                 <div class="btn-group">
@@ -64,88 +70,129 @@
                             Dashboard
                         </a>
                     </li>
-                    <li class="nav-link {{ request()->is('admin/page*') ? 'active' : '' }}">
-                        <a href="{{ url('/admin/page') }}">
-                            <div class="nav-link-icon d-inline-flex">
-                                <i class="fa-regular fa-file"></i>
-                            </div>
-                            Trang
-                        </a>
-                        <i class="arrow fas fa-angle-right"></i>
 
-                        <ul class="sub-menu">
-                            <li><a href="{{ url('/admin/page/add') }}">Thêm mới</a></li>
-                            <li><a href="{{ url('/admin/page') }}">Danh sách</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-link {{ request()->is('admin/post*') ? 'active' : '' }}">
-                        <a href="{{ url('/admin/post') }}">
-                            <div class="nav-link-icon d-inline-flex">
-                                <i class="fa-regular fa-newspaper"></i>
-                            </div>
-                            Bài viết
-                        </a>
-                        <i class="arrow fas fa-angle-right"></i>
-                        <ul class="sub-menu">
-                            <li><a href="{{ url('/admin/post/add') }}">Thêm mới</a></li>
-                            <li><a href="{{ url('/admin/post') }}">Danh sách</a></li>
-                            <li><a href="{{ url('/admin/post/cat') }}">Danh mục</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-link {{ request()->is('admin/product*') ? 'active' : '' }}">
-                        <a href="{{ url('/admin/product') }}">
-                            <div class="nav-link-icon d-inline-flex">
-                                <i class="fa-solid fa-cube"></i>
-                            </div>
-                            Sản phẩm
-                        </a>
-                        <i class="arrow fas fa-angle-right"></i>
-                        <ul class="sub-menu">
-                            <li><a href="{{ url('/admin/product/add') }}">Thêm mới</a></li>
-                            <li><a href="{{ url('/admin/product') }}">Danh sách</a></li>
-                            <li><a href="{{ url('/admin/product/cat') }}">Danh mục</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-link {{ request()->is('admin/order*') ? 'active' : '' }}">
-                        <a href="{{ url('/admin/order') }}">
-                            <div class="nav-link-icon d-inline-flex">
-                                <i class="fa-solid fa-tags"></i>
-                            </div>
-                            Bán hàng
-                        </a>
-                        <i class="arrow fas fa-angle-right text-pink-light"></i>
-                        <ul class="sub-menu">
-                            <li><a href="{{ url('/admin/order') }}">Đơn hàng</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-link {{ request()->is('admin/user*') ? 'active' : '' }}">
-                        <a href="{{ url('/admin/user') }}">
-                            <div class="nav-link-icon d-inline-flex">
-                                <i class="fa-regular fa-user"></i>
-                            </div>
-                            Người dùng
-                        </a>
-                        <i class="arrow fas fa-angle-right"></i>
+                    @canany(['page.view', 'page.add', 'page.edit', 'page.delete'])
+                        <li class="nav-link {{ request()->is('admin/page*') ? 'active' : '' }}">
+                            <a href="{{ url('/admin/page') }}">
+                                <div class="nav-link-icon d-inline-flex">
+                                    <i class="fa-regular fa-file"></i>
+                                </div>
+                                Trang
+                            </a>
+                            <i class="arrow fas fa-angle-right"></i>
 
-                        <ul class="sub-menu">
-                            <li><a href="{{ url('/admin/user/add') }}">Thêm mới</a></li>
-                            <li><a href="{{ url('/admin/user') }}">Danh sách</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-link {{ (request()->is('admin/permission*') || request()->is('admin/role*')) ? 'active' : '' }}">
-                        <a href="{{ route('permission.add') }}">
-                            <div class="nav-link-icon d-inline-flex">
-                                <i class="fa-solid fa-unlock"></i>
-                            </div>
-                            Phân quyền
-                        </a>
-                        <i class="arrow fas fa-angle-right"></i>
-                        <ul class="sub-menu">
-                            <li><a href="{{ route('permission.add') }}">Quyền</a></li>
-                            <li><a href="{{ url('/admin/role/add') }}">Thêm vai trò</a></li>
-                            <li><a href="{{ url('/admin/role') }}">Danh sách vai trò</a></li>
-                        </ul>
-                    </li>
+                            <ul class="sub-menu">
+                                @can('page.add')
+                                    <li><a href="{{ url('/admin/page/add') }}">Thêm mới</a></li>
+                                @endcan
+                                @can('page.view')
+                                    <li><a href="{{ url('/admin/page') }}">Danh sách</a></li>
+                                @endcan
+                            </ul>
+                        </li>
+                    @endcanany
+
+                    @canany(['post.view', 'post.add', 'post.edit', 'post.delete'])
+                        <li class="nav-link {{ request()->is('admin/post*') ? 'active' : '' }}">
+                            <a href="{{ url('/admin/post') }}">
+                                <div class="nav-link-icon d-inline-flex">
+                                    <i class="fa-regular fa-newspaper"></i>
+                                </div>
+                                Bài viết
+                            </a>
+                            <i class="arrow fas fa-angle-right"></i>
+                            <ul class="sub-menu">
+                                @can('post.add')
+                                    <li><a href="{{ url('/admin/post/add') }}">Thêm mới</a></li>
+                                @endcan
+                                @can('post.view')
+                                    <li><a href="{{ url('/admin/post') }}">Danh sách</a></li>
+                                    <li><a href="{{ url('/admin/post/cat') }}">Danh mục</a></li>
+                                @endcan
+                            </ul>
+                        </li>
+                    @endcanany
+
+                    @canany(['product.view', 'product.add', 'product.edit', 'product.delete'])
+                        <li class="nav-link {{ request()->is('admin/product*') ? 'active' : '' }}">
+                            <a href="{{ url('/admin/product') }}">
+                                <div class="nav-link-icon d-inline-flex">
+                                    <i class="fa-solid fa-cube"></i>
+                                </div>
+                                Sản phẩm
+                            </a>
+                            <i class="arrow fas fa-angle-right"></i>
+                            <ul class="sub-menu">
+                                @can('product.add')
+                                    <li><a href="{{ url('/admin/product/add') }}">Thêm mới</a></li>
+                                @endcan
+                                @can('product.view')
+                                    <li><a href="{{ url('/admin/product') }}">Danh sách</a></li>
+                                    <li><a href="{{ url('/admin/product/cat') }}">Danh mục</a></li>
+                                @endcan
+                            </ul>
+                        </li>
+                    @endcanany
+
+                    @canany(['order.view', 'order.edit', 'order.delete'])
+                        <li class="nav-link {{ request()->is('admin/order*') ? 'active' : '' }}">
+                            <a href="{{ url('/admin/order') }}">
+                                <div class="nav-link-icon d-inline-flex">
+                                    <i class="fa-solid fa-tags"></i>
+                                </div>
+                                Bán hàng
+                            </a>
+                            <i class="arrow fas fa-angle-right text-pink-light"></i>
+                            <ul class="sub-menu">
+                                <li><a href="{{ url('/admin/order') }}">Đơn hàng</a></li>
+                            </ul>
+                        </li>
+                    @endcanany
+
+                    @canany(['user.view', 'user.add', 'user.edit', 'user.delete'])
+                        <li class="nav-link {{ request()->is('admin/user*') ? 'active' : '' }}">
+                            <a href="{{ url('/admin/user') }}">
+                                <div class="nav-link-icon d-inline-flex">
+                                    <i class="fa-regular fa-user"></i>
+                                </div>
+                                Người dùng
+                            </a>
+                            <i class="arrow fas fa-angle-right"></i>
+
+                            <ul class="sub-menu">
+                                @can('user.add')
+                                    <li><a href="{{ url('/admin/user/add') }}">Thêm mới</a></li>
+                                @endcan
+                                @can('user.view')
+                                    <li><a href="{{ url('/admin/user') }}">Danh sách</a></li>
+                                @endcan
+                            </ul>
+                        </li>
+                    @endcanany
+
+                    @canany(['role.view', 'role.add', 'role.edit', 'role.delete', 'permission.view', 'permission.add', 'permission.edit', 'permission.delete'])
+                        <li
+                            class="nav-link {{ (request()->is('admin/permission*') || request()->is('admin/role*')) ? 'active' : '' }}">
+                            <a href="{{ route('permission.add') }}">
+                                <div class="nav-link-icon d-inline-flex">
+                                    <i class="fa-solid fa-unlock"></i>
+                                </div>
+                                Phân quyền
+                            </a>
+                            <i class="arrow fas fa-angle-right"></i>
+                            <ul class="sub-menu">
+                                @canany(['permission.view', 'permission.add', 'permission.edit', 'permission.delete'])
+                                    <li><a href="{{ route('permission.add') }}">Quyền</a></li>
+                                @endcanany
+                                @canany(['role.view', 'role.add', 'role.edit', 'role.delete'])
+                                    <li><a href="{{ url('/admin/role/add') }}">Thêm vai trò</a></li>
+                                @endcanany
+                                @can('role.view')
+                                    <li><a href="{{ url('/admin/role') }}">Danh sách vai trò</a></li>
+                                @endcan
+                            </ul>
+                        </li>
+                    @endcanany
 
                     <!-- <li class="nav-link"><a>Bài viết</a>
                         <ul class="sub-menu">

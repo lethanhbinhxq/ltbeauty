@@ -148,16 +148,20 @@
                                             </td>
                                             <td class="text-center">
                                                 <div class="d-flex justify-content-center gap-1">
-                                                    <a href="{{ route('admin.order.edit', $order->id) }}"
-                                                        class="btn btn-success btn-sm text-white" title="Edit">
-                                                        <i class="fa fa-edit"></i>
-                                                    </a>
-                                                    <button type="button" class="btn btn-danger btn-sm rounded-2 text-white"
-                                                        data-toggle="tooltip" data-placement="top" title="Delete"
-                                                        data-bs-toggle="modal" data-bs-target="#deleteOrderModal"
-                                                        data-bs-id="{{ $order->id }}" data-bs-code="{{ $order->code }}"><i
-                                                            class="fa fa-trash"></i></button>
-                                                    </a>
+                                                    @can('order.edit')
+                                                        <a href="{{ route('admin.order.edit', $order->id) }}"
+                                                            class="btn btn-success btn-sm text-white" title="Edit">
+                                                            <i class="fa fa-edit"></i>
+                                                        </a>
+                                                    @endcan
+
+                                                    @can('order.delete')
+                                                        <button type="button" class="btn btn-danger btn-sm rounded-2 text-white"
+                                                            data-toggle="tooltip" data-placement="top" title="Delete"
+                                                            data-bs-toggle="modal" data-bs-target="#deleteOrderModal"
+                                                            data-bs-id="{{ $order->id }}" data-bs-code="{{ $order->code }}"><i
+                                                                class="fa fa-trash"></i></button>
+                                                    @endcan
                                                 </div>
                                             </td>
                                         </tr>
