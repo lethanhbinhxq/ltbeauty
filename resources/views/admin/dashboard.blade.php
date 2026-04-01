@@ -69,7 +69,7 @@
                                 <tr class="border-top">
                                     <td>
                                         <div class="fw-bold">{{ $order->code }}</div>
-                                        <small class="text-muted">3 sản phẩm</small>
+                                        <small class="text-muted">{{ $order->items->count() }} sản phẩm</small>
                                     </td>
                                     <td>
                                         <div class="fw-semibold">{{ $order->customer_name }}</div>
@@ -78,7 +78,9 @@
                                     </td>
                                     <td>
                                         <div class="fw-semibold">{{ $order->items->first()->product->name }}</div>
-                                        <small class="text-muted">và {{ $order->items->count() - 1 }} sản phẩm khác</small>
+                                        @if ($order->items->count() > 1)
+                                            <small class="text-muted">và {{ $order->items->count() - 1 }} sản phẩm khác</small>
+                                        @endif
                                     </td>
                                     <td>
                                         <div class="fw-bold text-danger">{{ number_format($order->total, 0, '', '.') }}đ</div>

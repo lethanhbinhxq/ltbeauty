@@ -82,7 +82,8 @@
                                     @foreach ($orders as $order)
                                         <tr class="border-top">
                                             <td>
-                                                <input type="checkbox" class="form-check-input" name="list_check[]" value="{{ $order->id }}">
+                                                <input type="checkbox" class="form-check-input" name="list_check[]"
+                                                    value="{{ $order->id }}">
                                             </td>
                                             <td>
                                                 <div class="fw-bold">{{ $order->code }}</div>
@@ -95,7 +96,9 @@
                                             </td>
                                             <td>
                                                 <div class="fw-semibold">{{ $order->items->first()->product->name }}</div>
-                                                <small class="text-muted">và {{ $order->items->count() - 1 }} sản phẩm khác</small>
+                                                @if ($order->items->count() > 1)
+                                                    <small class="text-muted">và {{ $order->items->count() - 1 }} sản phẩm khác</small>
+                                                @endif
                                             </td>
                                             <td>
                                                 <div class="fw-bold text-danger">{{ number_format($order->total, 0, '', '.') }}đ
